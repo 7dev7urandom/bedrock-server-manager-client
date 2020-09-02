@@ -1,0 +1,24 @@
+<template>
+    <div v-show="selectedInternal">
+        <slot></slot>
+    </div>
+</template>
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+    name: "Tab",
+    props: {
+        name: {required: true},
+        selected: { default: false }
+    },
+    data() {
+        return {
+            selectedInternal: false
+        }
+    },
+    // TODO computed
+    mounted() {
+        this.selectedInternal = this.selected;
+    }
+})
+</script>
