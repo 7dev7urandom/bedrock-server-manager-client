@@ -2,7 +2,7 @@
     <div class="serverdata">
         <tab-system>
             <tab name="Info" :selected="true">
-                <status-tab :selected="selectedServer || {}" />
+                <status-tab />
             </tab>
             <tab name="Test2">
                 test2
@@ -16,7 +16,6 @@ import Tab from '../elements/Tab.vue'
 import TabSystem from '../pieces/TabSystem.vue'
 import StatusTab from '../tabs/Info.vue'
 export default Vue.extend({
-    props: ['selectedServer'],
     components: {
         Tab,
         TabSystem,

@@ -3,7 +3,7 @@
         <TabSystem>
             <Tab name="Servers" :selected="true">
                 <div>
-                    <ServerlistItem v-for="server in servers" v-bind:key="server.id" :serverObj="server" :pressed="pressed" />
+                    <ServerlistItem v-for="server in servers" v-bind:key="server.id" :serverObj="server" />
                 </div>
             </Tab>
         </TabSystem>
@@ -17,11 +17,9 @@ import Tab from '../elements/Tab.vue'
 import TabSystem from '../pieces/TabSystem.vue'
 
 export default Vue.extend({
-    props: ['serverSelected'],
     // @ts-ignore
     sockets: {
         serverList: function(acceptedServers) {
-            console.log(acceptedServers);
             this.servers = acceptedServers;
         }
     },
@@ -34,12 +32,6 @@ export default Vue.extend({
         ServerlistItem,
         Tab,
         TabSystem
-    },
-    methods: {
-        pressed: function(server) {
-            console.log(server.id);
-            this.serverSelected(server);
-        }
     }
 })
 </script>

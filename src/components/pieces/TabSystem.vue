@@ -22,20 +22,14 @@ export default Vue.extend({
             tabs: []
         }
     },
-    created() {
-        this.$root.$on('loginSuccessful', this.setTabs);
-        // this.tabs = this.$children.map(e => {e.$children});
-        
+    mounted() {
+        this.tabs = this.$children.reduce((a, cur) => a.concat(cur.$children), []);
     },
     methods: {
         selectTab(tabToSelect) {
             this.tabs.forEach(tab => {
                 tab.selectedInternal = (tab.name == tabToSelect.name);
             });
-        },
-        setTabs() {
-            this.tabs = this.$children.reduce((a, cur) => a.concat(cur.$children), []);
-            console.log(this.tabs);
         }
     },
     components: {

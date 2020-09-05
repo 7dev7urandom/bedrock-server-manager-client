@@ -14,11 +14,6 @@ export default {
   components: {
     LoginForm,
     FullPage
-  },
-  data: () => {
-    return {
-      loggedIn: false
-    }
   }
 }
 </script>

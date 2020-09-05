@@ -1,16 +1,16 @@
 <template>
-    <div v-show="loggedIn" class="fullpage">
+    <div v-show="$store.state.loggedIn" class="fullpage">
         <table class="fullpage">
             <tbody class="fullpage">
                 <tr class="fullpage">
                     <td class="fullpage serverside">
                         <div class="sizing">
-                            <Serverlist :serverSelected="selectServer"/>
+                            <Serverlist />
                         </div>
                     </td>
                     <td class="fullpage">
                         <div class="sizing">
-                            <Properties :selectedServer="selectedServer"/>
+                            <Properties />
                         </div>
                     </td>
                 </tr>
@@ -29,21 +29,6 @@ export default Vue.extend({
     components: {
         Serverlist,
         Properties
-    },
-    data: () => {
-        return {
-            loggedIn: false,
-            selectedServer: null
-        }
-    },
-    mounted() {
-        this.$root.$on('loginSuccessful', () => this.loggedIn = true);
-    },
-    methods: {
-        selectServer(server) {
-            this.selectedServer = server;
-            console.log("done");
-        }
     }
 })
 </script>

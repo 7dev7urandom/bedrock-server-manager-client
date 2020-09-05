@@ -8,17 +8,18 @@
             <tbody>
                 <tr>
                     <td>Name:</td>
-                    <td class="rightside"><span id="infotablename">{{ selected.name }}</span></td>
+                    <td class="rightside"><span id="infotablename" :contenteditable="editing" @input="editName">{{ selected.name }}</span></td>
                 </tr>
                 <tr>
                     <td colspan="2" class="rightside exep">
                         <!-- <br> -->
                         Description:
-                        <p style="margin-inline-start: 1em;" id="infotabledesc" class="description">{{ selected.description }}</p>
+                        <p style="margin-inline-start: 1em;" id="infotabledesc" class="description" :contenteditable="editing" @input="editDesc">{{ selected.description }}</p>
                     </td>
                 </tr>
                 <tr>
                     <td>Status:</td>
+                    <!-- TODO -->
                     <td class="rightside"><span id="infotablestatus" :class="{ red: selected.status === 'Stopped', green: selected.status === 'Started', yellow: true}">{{ selected.status }}</span></td>
                     <!-- <td class="editbutton"><img src="pencil.png" alt="edit"></td> -->
                 </tr>
@@ -55,26 +56,45 @@
 import Vue from 'vue'
 import mcButton from '../elements/mcButton.vue'
 export default Vue.extend({
-    props: ['selected'],
     data: () => {
         return {
             hasChanges: false,
-            editing: false
+            editing: false,
+            edited: {}
         }
     },
     methods: {
         edit(pressed) {
-            console.log("edit: " + pressed);
             this.editing = pressed;
+            if(this.editing) {
+                this.edited = Object.assign(this.edited, this.$store.state.selectedServer);
+            } else {
+                this.$store.state.selectedServer = this.edited;
+            }
             // document.querySelectorAll(".rightside").forEach(e => 
             //     [].forEach.call(e.children, el => 
             //     el.setAttribute("contenteditable", "true")
             // )); 
+        },
+        editName(evt) {
+            let src = evt.target.innerText;
+            this.edited.name = src;
+        },
+        editDesc(evt) {
+            let src = evt.target.innerText;
+            this.edited.description = src;
+        }
+    },
+    computed: {
+        selected(){ 
+            return this.$store.state.selectedServer;
         }
     },
     components: {
         mcButton
-    }
+    },
+    // watch: {
+    // }
 })
 </script>
 <style scoped>

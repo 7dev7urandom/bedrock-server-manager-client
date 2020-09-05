@@ -1,7 +1,7 @@
 <template>
     <tr class="server-row">
         <td>
-            <table v-on:click="pressed(serverObj)" class="listblack serverlist mc-font">
+            <table v-on:click="selected" class="listblack serverlist mc-font">
                     <tbody>
                         <tr>
                             <td class="server-cell fill-space"><span style="color: white; font-size: 1em;">{{ serverObj.name }}</span></td>
@@ -22,10 +22,13 @@
 import Vue from 'vue'
 export default Vue.extend({
     name: "ServerlistItem",
-    props: ['serverObj', 'pressed'],
+    props: ['serverObj'],
     methods: {
-        computeImageURL: function(status) {
+        computeImageURL(status) {
             return status === "Started" ? 'Green light.png' : 'Red light.png';
+        },
+        selected() {
+            this.$store.state.selectedServer = this.serverObj;
         }
     },
 });
