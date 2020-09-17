@@ -8,12 +8,14 @@
 <script>
 import LoginForm from './components/LoginForm.vue'
 import FullPage from './components/FullPage.vue'
+import Store from './components/Store.vue'
 
 export default {
   name: 'App',
   components: {
     LoginForm,
-    FullPage
+    FullPage,
+    Store
   }
 }
 </script>
@@ -77,6 +79,7 @@ html {
 
 <template>
   <div id="app">
+    <Store :store="$store.state" />
     <LoginForm />
     <FullPage />
   </div>

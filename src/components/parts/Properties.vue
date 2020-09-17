@@ -2,7 +2,7 @@
     <div class="serverdata">
         <tab-system>
             <tab name="Info" :selected="true">
-                <status-tab />
+                <status-tab :key="$store.state.selectedServer" />
             </tab>
             <tab name="Test2">
                 test2

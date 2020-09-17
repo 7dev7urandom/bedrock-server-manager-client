@@ -1,9 +1,9 @@
 <template>
     <div id="serverzone">
-        <TabSystem>
+        <TabSystem v-show="$store.state.ready">
             <Tab name="Servers" :selected="true">
                 <div>
-                    <ServerlistItem v-for="server in servers" v-bind:key="server.id" :serverObj="server" />
+                    <ServerlistItem v-for="index in $store.state.servers.length" :key="$store.state.servers[index - 1].id" :index="index - 1" :obj="$store.state.servers" />
                 </div>
             </Tab>
         </TabSystem>
@@ -20,12 +20,8 @@ export default Vue.extend({
     // @ts-ignore
     sockets: {
         serverList: function(acceptedServers) {
-            this.servers = acceptedServers;
-        }
-    },
-    data: () => {
-        return {
-            servers: []
+            this.$store.state.servers = acceptedServers; //.map(server => { server.refresh = 0; return server});
+            this.$store.state.ready = true;
         }
     },
     components: {

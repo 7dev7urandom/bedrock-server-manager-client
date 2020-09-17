@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="pressed = toggle ? !pressed : false; click(pressed)" :class="{ dark: dark, pressed: pressed }">
+        <button @click="click()" :class="{ dark: dark, pressed: pressed || false }">
             <slot></slot>
         </button>
     </div>
@@ -8,12 +8,7 @@
 <script lang="ts">
 import Vue from 'vue' 
 export default Vue.extend({
-    props: ['dark', 'click', 'toggle'],
-    data: () => {
-        return {
-            pressed: false
-        }
-    }
+    props: ['dark', 'click', 'pressed']
 })
 </script>
 <style scoped>

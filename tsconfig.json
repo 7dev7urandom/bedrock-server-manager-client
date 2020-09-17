@@ -1,5 +1,9 @@
 {
     "compilerOptions": {
         "forceConsistentCasingInFileNames": false
-    }
+    },
+    "include": [
+        "**/*.ts",
+        "**/*.vue"
+    ]
 }

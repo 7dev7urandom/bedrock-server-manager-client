@@ -1,80 +1,85 @@
 <template>
     <div>
         <h3>Server Info</h3>
-        <mc-button v-show="!!selected.name" :dark="true" :toggle="true" :click="edit" class="button">
+        <mc-button v-show="!!this.$store.state.servers[this.$store.state.selectedServer] && hasPermission" :dark="true" :click="edit" class="button" :pressed="editing">
             <img src="pencil.png" alt="edit" align="right">
         </mc-button>
-        <table v-show="!!selected.name" id="infotable">
+        <mc-button v-show="editing" :dark="true" :click="revert" class="button">
+            <img src="revert.png" alt="revert" align="right">
+        </mc-button>
+        <table v-if="!!this.$store.state.servers[this.$store.state.selectedServer]" id="infotable">
             <tbody>
                 <tr>
                     <td>Name:</td>
-                    <td class="rightside"><span id="infotablename" :contenteditable="editing" @input="editName">{{ selected.name }}</span></td>
+                    <td class="rightside"><span id="infotablename" :contenteditable="editing" @input="editName">{{ this.$store.state.servers[this.$store.state.selectedServer].name }}</span></td>
                 </tr>
                 <tr>
                     <td colspan="2" class="rightside exep">
                         <!-- <br> -->
                         Description:
-                        <p style="margin-inline-start: 1em;" id="infotabledesc" class="description" :contenteditable="editing" @input="editDesc">{{ selected.description }}</p>
+                        <p style="margin-inline-start: 1em;" id="infotabledesc" class="description" :contenteditable="editing" @input="editDesc">{{ this.$store.state.servers[this.$store.state.selectedServer].description }}</p>
                     </td>
                 </tr>
                 <tr>
                     <td>Status:</td>
                     <!-- TODO -->
-                    <td class="rightside"><span id="infotablestatus" :class="{ red: selected.status === 'Stopped', green: selected.status === 'Started', yellow: true}">{{ selected.status }}</span></td>
+                    <td class="rightside"><span id="infotablestatus" :class="{ red: this.$store.state.servers[this.$store.state.selectedServer].status === 'Stopped', green: this.$store.state.servers[this.$store.state.selectedServer].status === 'Started', yellow: true}">{{ this.$store.state.servers[this.$store.state.selectedServer].status }}</span></td>
                     <!-- <td class="editbutton"><img src="pencil.png" alt="edit"></td> -->
                 </tr>
                 <tr>
                     <td>Players Online:</td>
-                    <td class="rightside"><span id="infotableplayersonline">{{ selected.onlinePlayers }}</span>/<span id="infotablemaxplayers">{{ selected.maxPlayers }}</span></td>
+                    <td class="rightside"><span id="infotableplayersonline">{{ this.$store.state.servers[this.$store.state.selectedServer].onlinePlayers }}</span>/<span id="infotablemaxplayers">{{ this.$store.state.servers[this.$store.state.selectedServer].maxPlayers }}</span></td>
                 </tr>
                 <tr>
                     <td>Port:</td>
                     <td class="rightside">
-                        <span id="infotableport" v-show="!editing">{{ selected.port }}</span>
-                        <input type="number" v-model="selected.port" v-show="editing">
+                        <span id="infotableport" v-show="!editing">{{ this.$store.state.servers[this.$store.state.selectedServer].port }}</span>
+                        <input type="number" v-model="edited.port" v-show="editing">
                     </td>
                 </tr>
                 <tr>
                     <td>Version:</td>
                     <td class="rightside">
-                        <span id="infotableversion" v-show="!editing">{{ selected.version }}</span>
-                        <select v-if="!!selected.name" v-model="selected.version" v-show="editing">
+                        <span id="infotableversion" v-show="!editing">{{ this.$store.state.servers[this.$store.state.selectedServer].version }}</span>
+                        <select v-if="!!this.$store.state.servers[this.$store.state.selectedServer]" v-model="edited.version" v-show="editing">
                             <option v-for="version of globalMCVersions" :key="version" :value="version">{{ version }}</option>
                         </select>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <p v-show="!selected.name">No server selected</p>
-        <div v-show="hasChanges" class="apply">
-            <button><span class="innerbutton">Apply</span></button>
-            <button><span class="red innerbutton">Revert</span></button>
-        </div>
+        <p v-show="!this.$store.state.servers[this.$store.state.selectedServer]">No server selected {{ LocalPermissions.CAN_EDIT_PROPERTIES }}</p>
     </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import mcButton from '../elements/mcButton.vue'
+import Vue from 'vue';
+import mcButton from '../elements/mcButton.vue';
+import { LocalPermissions } from '../../constants';
+
 export default Vue.extend({
     data: () => {
         return {
-            hasChanges: false,
             editing: false,
             edited: {}
         }
     },
     methods: {
-        edit(pressed) {
-            this.editing = pressed;
+        edit() {
+            this.editing = !this.editing;
             if(this.editing) {
-                this.edited = Object.assign(this.edited, this.$store.state.selectedServer);
+                this.edited = Object.assign({}, this.$store.state.servers[this.$store.state.selectedServer]);
+                // TODO: socket server updated
             } else {
-                this.$store.state.selectedServer = this.edited;
+                for(let key in this.edited) {
+                    this.$store.state.servers[this.$store.state.selectedServer][key] = this.edited[key];
+                }
             }
-            // document.querySelectorAll(".rightside").forEach(e => 
-            //     [].forEach.call(e.children, el => 
-            //     el.setAttribute("contenteditable", "true")
-            // )); 
+        },
+        revert() {
+            this.editing = false;
+            this.edited = {};
+            document.getElementById('infotablename').innerText = this.$store.state.servers[this.$store.state.selectedServer].name;
+            document.getElementById('infotabledesc').innerText = this.$store.state.servers[this.$store.state.selectedServer].description;
         },
         editName(evt) {
             let src = evt.target.innerText;
@@ -85,14 +90,14 @@ export default Vue.extend({
             this.edited.description = src;
         }
     },
-    computed: {
-        selected(){ 
-            return this.$store.state.selectedServer;
-        }
-    },
     components: {
         mcButton
     },
+    computed: {
+        hasPermission() {
+            return this.$store.state.servers[this.$store.state.selectedServer].access & LocalPermissions.CAN_EDIT_PROPERTIES;
+        }
+    }
     // watch: {
     // }
 })

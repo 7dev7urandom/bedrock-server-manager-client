@@ -10,11 +10,10 @@ Vue.use(VueSocketIO, SocketInstance);
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
-    selectedServer: {},
-    loggedIn: false
-  },
-  mutations: {
-
+    selectedServer: null,
+    servers: [],
+    loggedIn: false,
+    ready: false,
   }
 })
 Vue.config.productionTip = false
@@ -22,7 +21,7 @@ Vue.mixin({
   data: () => {
     return {
       get globalMCVersions() {
-        return [ '1.16.0'];
+        return ['1.16.0'];
       }
     }
   }

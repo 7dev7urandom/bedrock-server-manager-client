@@ -1,18 +1,24 @@
 <template>
     <tr class="server-row">
         <td>
-            <table v-on:click="selected" class="listblack serverlist mc-font">
+            <table v-on:click="selected" class="listblack serverlist mc-font" :class="{ selected: this.$store.state.selectedServer === this.index }" >
                     <tbody>
                         <tr>
-                            <td class="server-cell fill-space"><span style="color: white; font-size: 1em;">{{ serverObj.name }}</span></td>
+                            <td class="server-cell fill-space" colspan="2"><span style="color: white; font-size: 1em;">{{ server.name }}</span></td>
             
-                            <td class="server-cell right-align">{{ serverObj.version }}</td>
-                            <td class="server-cell right-align min-cell-size" :class="serverObj.status === 'Started' ? 'green' : serverObj.status === 'Stopped' ? 'red' : 'yellow'">{{ serverObj.status }}</td>
+                            <td class="server-cell right-align">{{ server.version }}</td>
+                            <td class="server-cell right-align min-cell-size" :class="server.status === 'Started' ? 'green' : server.status === 'Stopped' ? 'red' : 'yellow'">{{ server.status }}</td>
+                        </tr>
+                        <tr class="heightzero">
+                            <td></td>
+                            <td class="crazysize"></td>
+                            <td></td>
+                            <td></td>    
                         </tr>
                         <tr>
-                            <td class="server-cell">{{ serverObj.port }}</td>
-                            <td class="server-cell right-align" style="white-space: nowrap;">{{ serverObj.onlinePlayers }}/{{ serverObj.maxPlayers }} online</td>
-                            <td class="server-cell right-align min-cell-size"><img class="status-light" :src="computeImageURL()"></td>
+                            <td class="server-cell">{{ server.port }}</td>
+                            <td class="server-cell right-align" style="white-space: nowrap;" colspan="2">{{ server.onlinePlayers }}/{{ server.maxPlayers }} online</td>
+                            <td class="server-cell right-align min-cell-size"><img class="status-light" :src="computeImageURL"></td>
                         </tr>
                     </tbody>
                 </table></td> 
@@ -22,19 +28,36 @@
 import Vue from 'vue'
 export default Vue.extend({
     name: "ServerlistItem",
-    props: ['serverObj'],
+    props: ['index', 'obj'],
+    // data: () => { 
+    //     return {
+    //         server: 
+    //     }
+    // },
     methods: {
-        computeImageURL(status) {
-            return status === "Started" ? 'Green light.png' : 'Red light.png';
-        },
         selected() {
-            this.$store.state.selectedServer = this.serverObj;
+            this.$store.state.selectedServer = this.index;
         }
     },
+    computed: {
+        computeImageURL() {
+            return this.status === "Started" ? 'Green light.png' : 'Red light.png';
+        },
+        server() {
+            console.log("called");
+            return this.obj[this.index];
+        }
+    }
 });
 </script>
 
 <style scoped>
+.heightzero {
+    height: 0;
+}
+.crazysize {
+    width: 100vw;
+}
 .status-light {
     height: 20px;
 }
