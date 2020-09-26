@@ -12,11 +12,11 @@
         </div>
     </div>
 </template>
-<script lang="ts">
-import Vue from 'vue'
+<script>
 import Border from '../helper/Border.vue'
 
-export default Vue.extend({
+export default {
+    name: "TabSystem",
     data: () => {
         return {
             tabs: []
@@ -36,7 +36,7 @@ export default Vue.extend({
         // eslint-disable-next-line vue/no-unused-components
         Border,
     }
-})
+}
 </script>
 <style scoped>
 .tab {

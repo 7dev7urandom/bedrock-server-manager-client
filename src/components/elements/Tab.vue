@@ -16,7 +16,6 @@ export default Vue.extend({
             selectedInternal: false
         }
     },
-    // TODO computed
     mounted() {
         this.selectedInternal = this.selected;
     }

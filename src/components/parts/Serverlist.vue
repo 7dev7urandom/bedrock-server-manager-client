@@ -3,7 +3,9 @@
         <TabSystem v-show="$store.state.ready">
             <Tab name="Servers" :selected="true">
                 <div>
-                    <ServerlistItem v-for="index in $store.state.servers.length" :key="$store.state.servers[index - 1].id" :index="index - 1" :obj="$store.state.servers" />
+                    <ListItem :dark="true" v-for="index in $store.state.servers.length" :selected="$store.state.selectedServer === index - 1" :key="$store.state.servers[index - 1].id">
+                        <ServerListItem :index="index - 1" :obj="$store.state.servers"></ServerListItem>
+                    </ListItem>
                 </div>
             </Tab>
         </TabSystem>
@@ -11,10 +13,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import ServerlistItem from '../pieces/ServerlistItem.vue'
-import Tab from '../elements/Tab.vue'
-import TabSystem from '../pieces/TabSystem.vue'
+import Vue from 'vue';
+import ListItem from '../pieces/ListItem.vue';
+import Tab from '../elements/Tab.vue';
+import TabSystem from '../pieces/TabSystem.vue';
+import ServerListItem from '../pieces/ServerListItem.vue';
 
 export default Vue.extend({
     // @ts-ignore
@@ -25,9 +28,15 @@ export default Vue.extend({
         }
     },
     components: {
-        ServerlistItem,
+        ListItem,
         Tab,
-        TabSystem
+        TabSystem,
+        ServerListItem
+    },
+    methods: {
+        // selectServer() {
+        //     this.selected
+        // }
     }
 })
 </script>

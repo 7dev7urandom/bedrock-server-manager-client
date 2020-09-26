@@ -48,15 +48,14 @@
                 </tr>
             </tbody>
         </table>
-        <p v-show="!this.$store.state.servers[this.$store.state.selectedServer]">No server selected {{ LocalPermissions.CAN_EDIT_PROPERTIES }}</p>
+        <p v-show="!this.$store.state.servers[this.$store.state.selectedServer]">No server selected</p>
     </div>
 </template>
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import mcButton from '../elements/mcButton.vue';
 import { LocalPermissions } from '../../constants';
 
-export default Vue.extend({
+export default {
     data: () => {
         return {
             editing: false,
@@ -100,7 +99,7 @@ export default Vue.extend({
     }
     // watch: {
     // }
-})
+}
 </script>
 <style scoped>
 .rightside:not(.exep) {
@@ -117,11 +116,6 @@ export default Vue.extend({
 img {
     padding-right: 2px;
     height: 1.7em;
-}
-h3 {
-    display: inline-block;
-    /* margin-inline-start: 5px; */
-    font-weight: normal;
 }
 .button {
     float: right;

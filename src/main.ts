@@ -10,10 +10,18 @@ Vue.use(VueSocketIO, SocketInstance);
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
-    selectedServer: null,
+    selectedServer: 0,
     servers: [],
     loggedIn: false,
     ready: false,
+  },
+  getters: {
+    currentServer: state => {
+      // if(state.selectedServer) return null;
+      if(state.servers.length < 1) return null;
+      if(state.selectedServer >= state.servers.length) return null;
+      return state.servers[state.selectedServer];
+    }
   }
 })
 Vue.config.productionTip = false

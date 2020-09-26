@@ -10,9 +10,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-export default Vue.extend({
+<script>
+export default {
   name: 'LoginForm',
   data: () => {
       return { 
@@ -40,7 +39,7 @@ export default Vue.extend({
           this.$store.state.loggedIn = true;
       }
   }
-});
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
