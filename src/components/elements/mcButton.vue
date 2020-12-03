@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="click()" :class="{ dark: dark, pressed: pressed || false }">
+        <button @click="click()" :class="{ dark: dark, pressed: pressed || false }" :disabled="disabled">
             <slot></slot>
         </button>
     </div>
@@ -8,7 +8,7 @@
 <script lang="ts">
 import Vue from 'vue' 
 export default Vue.extend({
-    props: ['dark', 'click', 'pressed']
+    props: ['dark', 'click', 'pressed', 'disabled']
 })
 </script>
 <style scoped>
@@ -55,5 +55,12 @@ button.dark.pressed {
     border-right: 3px #505050 solid;
     border-left: 3px #2b2b2b solid;
     border-top: 3px #2b2b2b solid;
+}
+button:disabled {
+    background-color: #999;
+}
+button:disabled:hover {
+    box-shadow: none;
+    outline: none;
 }
 </style>

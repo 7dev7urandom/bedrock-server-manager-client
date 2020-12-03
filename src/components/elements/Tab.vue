@@ -1,6 +1,6 @@
 <template>
     <div v-show="selectedInternal">
-        <slot></slot>
+        <slot :selected="selectedInternal"></slot>
     </div>
 </template>
 <script lang="ts">

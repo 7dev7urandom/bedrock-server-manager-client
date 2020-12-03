@@ -1,10 +1,12 @@
 <template>
     <tbody v-on:click="selected">
         <tr>
-            <td class="server-cell fill-space" colspan="2"><span style="color: white; font-size: 1em;">{{ server.name }}</span></td>
+            <td class="server-cell fill-space" colspan="2"><div class="servername">
+                    <span >{{ server.properties['server-name'] }}</span>
+                </div></td>
 
             <td class="server-cell right-align">{{ server.version }}</td>
-            <td class="server-cell right-align min-cell-size" :class="server.status === 'Started' ? 'green' : server.status === 'Stopped' ? 'red' : 'yellow'">{{ server.status }}</td>
+            <td class="server-cell right-align min-cell-size" :class="server.status === 'Running' ? 'green' : server.status === 'Stopped' ? 'red' : 'yellow'">{{ server.status }}</td>
         </tr>
         <tr class="heightzero">
             <td></td>
@@ -13,9 +15,9 @@
             <td></td>    
         </tr>
         <tr>
-            <td class="server-cell">{{ server.port }}</td>
-            <td class="server-cell right-align" style="white-space: nowrap;" colspan="2">{{ server.onlinePlayers }}/{{ server.maxPlayers }} online</td>
-            <td class="server-cell right-align min-cell-size"><img class="status-light" :src="computeImageURL"></td>
+            <td class="server-cell">{{ server.properties['server-port'] }}</td>
+            <td class="server-cell right-align" style="white-space: nowrap;" colspan="2">{{ server.onlinePlayers }}/{{ server.properties['max-players'] }} online</td>
+            <td class="server-cell right-align min-cell-size"> <img class="status-light" src="flag.png" alt="Controls 19132" title="This server controls port 19132" v-show="server.controls19132"> <img class="status-light" :src="computeImageURL"></td>
         </tr>
     </tbody>
 </template>
@@ -25,12 +27,14 @@ export default {
     methods: {
         selected() {
             this.$store.state.selectedServer = this.index;
+            this.$store.state.tabReset++;
+            this.$socket.client.emit('serverLoad', { serverId: this.$store.getters.currentServer.id });
             // this.select();
         }
     },
     computed: {
         computeImageURL() {
-            return this.status === "Started" ? 'Green light.png' : 'Red light.png';
+            return this.server.status === "Running" ? 'Green light.png' : 'Red light.png';
         },
         server() {
             return this.obj[this.index];
@@ -39,6 +43,15 @@ export default {
 }
 </script>
 <style scoped>
+.servername {
+    color: white;
+    font-size: 1em; 
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    max-width: 15vw;
+    display: inline-block;
+    overflow: hidden;
+}
 .heightzero {
     height: 0;
 }

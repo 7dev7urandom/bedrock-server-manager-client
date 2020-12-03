@@ -37,6 +37,7 @@ export default {
           this.password = "";
           this.$socket.client.emit("getServers");
           this.$store.state.loggedIn = true;
+          this.$store.state.currentUserData = data;
       }
   }
 }

@@ -33,7 +33,6 @@ export default {
         }
     },
     components: {
-        // eslint-disable-next-line vue/no-unused-components
         Border,
     }
 }
@@ -76,5 +75,8 @@ export default {
     color: #505050;
     /* z-index: 0; */
     max-height: none;
+}
+.tabs {
+    max-height: 200px;
 }
 </style>

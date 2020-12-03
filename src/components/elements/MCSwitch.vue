@@ -1,20 +1,21 @@
 <template>
-    <label class="switch">
-        <input type="checkbox" id="num1">
+    <label class="switch" :title="disabled ? 'You cannot change this' : ''">
+        <input @change="change" type="checkbox" :checked="value" :disabled="disabled">
         <span class="switchinternal">
             <span class="switchtab">
                 <span class="switchtabborder"></span>
             </span>
             <span class="switchdash"></span>
         </span>
-        <span class="switchtext">
+        <span :class="{ switchtext: true, tint: disabled }">
             <slot></slot>
         </span>
     </label>
 </template>
 <script>
 export default {
-    name: 'MCSwitch'
+    name: 'MCSwitch',
+    props: ['change', 'value', 'disabled']
 }
 </script>
 <style scoped>
@@ -23,9 +24,12 @@ export default {
     margin-top: 0.6em;
     display: inline-block;
 }
+.tint {
+    color: #999;
+}
 .switch {
     display: block;
-    margin: 6px;
+    margin: 10px;
 }
 .switch input {
     opacity: 0;
@@ -54,18 +58,32 @@ export default {
     background-color: #c6c6c6;
     border: 2px solid black;
 }
-.switch:hover .switchinternal {
+.switch:hover input:not(:disabled) ~ .switchinternal {
     border: 2px solid white;
     box-shadow: 0 3000px rgba(0, 255, 0, 0.4) inset;
 }
-.switch:hover .switchinternal .switchtab {
+.switch:hover input:not(:disabled) ~ .switchinternal .switchtab {
     border: 2px solid white;
     box-shadow: 0 3000px rgba(0, 255, 0, 0.4) inset;
+}
+.switch input:disabled ~ .switchinternal .switchtab {
+    box-shadow: 0 3000px rgba(0, 0, 0, 0.5) inset;
+}
+.switch input:disabled ~ .switchinternal {
+    box-shadow: 0 3000px rgba(0, 0, 0, 0.3) inset;
 }
 .switch input:checked ~ .switchinternal .switchtab {
-    /* top: calc(-0.5em + -10px); */
     left: 2.4375em;
 }
+/* Used a better tooltip option */
+/* .switch input:disabled ~ .switchinternal[data-tooltip]::before {
+    position: absolute;
+    content: attr(data-tooltip);
+    opacity: 0;
+}
+.switch input:disabled ~ .switchinternal[data-tooltip]:hover::before {
+    opacity: 1;
+} */
 .switchdash {
     width: 0.3em;
     height: 0.975em;
@@ -86,7 +104,6 @@ export default {
     border-top: #f7f7f7 2px solid;
     border-left: #f7f7f7 2px solid;
     border-bottom: #656465 2px solid;
-    /* z-index: 1; */
     display: block;
     height: -webkit-fill-available;
 }

@@ -14,10 +14,11 @@ const store = new Vuex.Store({
     servers: [],
     loggedIn: false,
     ready: false,
+    tabReset: 0,
+    currentUserData: {}
   },
   getters: {
     currentServer: state => {
-      // if(state.selectedServer) return null;
       if(state.servers.length < 1) return null;
       if(state.selectedServer >= state.servers.length) return null;
       return state.servers[state.selectedServer];

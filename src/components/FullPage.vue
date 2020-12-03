@@ -1,5 +1,6 @@
 <template>
     <div v-show="$store.state.loggedIn" class="fullpage">
+        <!-- <Dialog /> -->
         <table class="fullpage">
             <tbody class="fullpage">
                 <tr class="fullpage">
@@ -10,7 +11,7 @@
                     </td>
                     <td class="fullpage">
                         <div class="sizing">
-                            <Properties />
+                            <Properties v-if="$store.state.servers[$store.state.selectedServer]" />
                         </div>
                     </td>
                 </tr>
@@ -23,12 +24,14 @@
 import Vue from 'vue'
 import Serverlist from './parts/Serverlist.vue'
 import Properties from './parts/Properties.vue'
+// import Dialog from './windows/Dialog.vue'
 
 export default Vue.extend({
     name: "FullPage",
     components: {
         Serverlist,
-        Properties
+        Properties,
+        // Dialog
     }
 })
 </script>

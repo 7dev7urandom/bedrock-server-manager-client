@@ -21,3 +21,10 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary files
+*.bak
+*.tmp
+
+# Linecount
+linecount.*

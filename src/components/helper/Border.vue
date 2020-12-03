@@ -1,12 +1,17 @@
 <template>
     <div class="s02">
         <div class="s03">
-            <div class="s04">
+            <div :class="{ s04: !ignoreScroll }">
                 <slot></slot>
             </div>
         </div>
     </div>
 </template>
+<script>
+export default {
+    props: ['ignoreScroll']
+}
+</script>
 <style scoped>
 .s02 {
     background-color: #111;

@@ -1,7 +1,7 @@
 <template>
     <tbody v-on:click="selected(index)" class="width100">
         <tr class="listwhite width100"><td class="width100">
-            <div class="listcontent"><div class="dark">{{ obj.name }}</div><div style="">{{ obj.id === $store.state.currentUserData.id ? "[You]" : "" }} {{ obj.perm }} </div></div>
+            <div class="listcontent"><div class="dark" :style="obj.color ? `color: ${obj.color};` : ''">{{ obj.name }}</div></div>
         </td></tr>
         <!-- <tr class="server-row listwhite width100"><td class="width100">
             <div class="listcontent"><div class="dark">Ian</div><div>Admin</div></div>
@@ -18,11 +18,16 @@ export default {
     width: 90%;
     display: block;
 }
+tr .width100 {
+    width: calc(100% - 10px);
+}
 tbody {
-    padding: 10px 5px 5px 10px;
+    padding: 10px 0 10px 10px;
 }
 .dark {
     color: #505050;
     font-size: 1.1em;
+    text-align: center;
+    vertical-align: middle;
 }
 </style>

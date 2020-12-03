@@ -2,26 +2,7 @@
     <tr class="server-row" :class="{ fillavail: fillavailable }">
         <td :class="{ fillavail: fillavailable }">
             <table class="serverlist mc-font" :class="{ selected: selected, listblack: dark, listlight: !dark, fillavail: fillavailable }" >
-                    <!-- <tbody> -->
-                        <!-- <tr>
-                            <td class="server-cell fill-space" colspan="2"><span style="color: white; font-size: 1em;">{{ server.name }}</span></td>
-            
-                            <td class="server-cell right-align">{{ server.version }}</td>
-                            <td class="server-cell right-align min-cell-size" :class="server.status === 'Started' ? 'green' : server.status === 'Stopped' ? 'red' : 'yellow'">{{ server.status }}</td>
-                        </tr>
-                        <tr class="heightzero">
-                            <td></td>
-                            <td class="crazysize"></td>
-                            <td></td>
-                            <td></td>    
-                        </tr>
-                        <tr>
-                            <td class="server-cell">{{ server.port }}</td>
-                            <td class="server-cell right-align" style="white-space: nowrap;" colspan="2">{{ server.onlinePlayers }}/{{ server.maxPlayers }} online</td>
-                            <td class="server-cell right-align min-cell-size"><img class="status-light" :src="computeImageURL"></td>
-                        </tr> -->
                         <slot></slot>
-                    <!-- </tbody> -->
                 </table></td> 
             </tr>
 </template>
@@ -29,25 +10,6 @@
 export default {
     name: "ListItem",
     props: ['selected', 'dark', 'fillavailable'],
-    // data: () => { 
-    //     return {
-    //         server: 
-    //     }
-    // },
-    // methods: {
-    //     selected() {
-    //         this.$store.state.selectedServer = this.index;
-    //     }
-    // },
-    // computed: {
-    //     computeImageURL() {
-    //         return this.status === "Started" ? 'Green light.png' : 'Red light.png';
-    //     },
-    //     server() {
-    //         console.log("called");
-    //         return this.obj[this.index];
-    //     }
-    // }
 };
 </script>
 

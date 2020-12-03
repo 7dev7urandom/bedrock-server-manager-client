@@ -4,39 +4,25 @@
         <ul id="permsself">
             <li v-for="perm in permissionList" :key="perm">{{ perm }}</li>
         </ul>
-        <div id="permeditavailible" v-show="permeditavailible">
+        <div id="permeditavailible" v-if="permeditavailible">
             <div class="divider"></div>
-            <div id="permeditor" class="flexfill">
-                
-                    <!-- <tr>
-                        <td>
-                            <table id="permuserlist">
-                                <tbody class="width100">
-                                    <tr class="server-row listwhite width100"><td class="width100">
-                                        <div class="listcontent"><div class="dark">Micah</div><div>Creator</div></div>
-                                    </td></tr>
-                                    <tr class="server-row listwhite width100"><td class="width100">
-                                        <div class="listcontent"><div class="dark">Ian</div><div>Admin</div></div>
-                                    </td></tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td> -->
-                            <div id="permuserlist">
-                                <ListItem :fillavailable="true" v-for="user in users" :key="user.name" :selected="user.id === selectedUser">
-                                    <UserlistItem :obj="user" :selected="selectUser"></UserlistItem>
-                                </ListItem>
-                            </div>
-                            <div class="vertdivider"></div>
-                        <!-- </td>
-                        <td> -->
-                            <div id="permlist">
-                                <MCSwitch>Num1</MCSwitch>
-                                <MCSwitch>Num2</MCSwitch>
-                            </div>
-                        <!--</td>
-                    </tr>-->
-
+            <div id="permeditor" class="flexfill" v-if="$store.state.servers[this.$store.state.selectedServer]" >
+                <div id="permuserlist">
+                    <ListItem :fillavailable="true" v-for="(user, index) in $store.state.servers[this.$store.state.selectedServer].allowedUsers" :key="user.name" :selected="index === selectedUser">
+                        <UserlistItem :index="index" :obj="user" :selected="selectUser"></UserlistItem>
+                    </ListItem>
+                </div>
+                <div class="vertdivider"></div>
+                <perm-list :setView="setValue(LocalPermissions.CAN_VIEW)"
+                    :setConsole="setValue(LocalPermissions.CAN_USE_CONSOLE)"
+                    :setEditProps="setValue(LocalPermissions.CAN_EDIT_PROPERTIES)"
+                    :setCreateWorlds="setValue(LocalPermissions.CAN_CREATE_WORLDS)"
+                    :setDeleteWorlds="setValue(LocalPermissions.CAN_DELETE_WORLDS)"
+                    :setSetStatus="setValue(LocalPermissions.CAN_SET_STATUS)"
+                    :setEditPerms="setValue(LocalPermissions.CAN_EDIT_PERMISSIONS)"
+                    :users="$store.state.servers[this.$store.state.selectedServer].allowedUsers" 
+                    :selectedUser="selectedUser" 
+                    :key="selectedUser" />
             </div>
         </div>
     </div>
@@ -44,24 +30,21 @@
 
 <script>
 import { LocalPermissions } from '../../constants';
-import MCSwitch from '../elements/MCSwitch.vue';
 import ListItem from '../pieces/ListItem.vue';
 import UserlistItem from '../pieces/UserlistItem.vue';
+import permList from '../elements/permList.vue';
 
 export default {
     name: 'Permissions',
     components: {
-        MCSwitch,
+        permList,
         ListItem,
         UserlistItem
     },
     data: () => {
         return {
-            users: [
-                { name: "Micah", title: "Creator", access: 255, id: 0 },
-                { name: "Ian", title: "Admin", access: 255, id: 1 }
-            ],
-            selectedUser: 0
+            selectedUser: 0,
+            LocalPermissions
         }
     },
     computed: {
@@ -86,6 +69,20 @@ export default {
     methods: {
         selectUser(id) {
             this.selectedUser = id;
+        }, // TODO: listen for socket error and give error box
+        setValue(permission) {
+            // Must be inline to preserve special vue `this` variable
+            return ({ target }) => {
+                let { checked } = target;
+
+                if(checked) this.$store.state.servers[this.$store.state.selectedServer].allowedUsers[this.selectedUser].access |= permission;
+                else this.$store.state.servers[this.$store.state.selectedServer].allowedUsers[this.selectedUser].access &= ~permission;
+                this.$socket.client.emit('setPermission', {
+                    userId: this.$store.state.servers[this.$store.state.selectedServer].allowedUsers[this.selectedUser].id,
+                    perm: this.$store.state.servers[this.$store.state.selectedServer].allowedUsers[this.selectedUser].access,
+                    serverId: this.$store.getters.currentServer.id
+                });
+            }
         }
     }
 }
@@ -94,10 +91,6 @@ export default {
 tbody {
     width: 100%;
 }
-/* .server-row:hover {
-    border: 2px white solid;
-    width: 100%;
-} */
 .listcontent {
     background-color: #c6c6c6;
     color: #505050;
@@ -116,9 +109,6 @@ tbody {
     border-bottom: #f7f7f7 2px solid;
     padding: 0.5em;
 }
-/* .listcontent:hover {
-    border: 2px white solid;
-} */
 .listcontent:hover {
     background-color: #218306;
 }
@@ -132,11 +122,7 @@ tbody {
     display: inline-block;
     vertical-align: top;
 }
-#permlist {
-    display: inline-block;
-    margin-inline-start: 5px;
-    vertical-align: top;
-}
+
 #permsself {
     columns: 2;
     flex: 0 1 auto;

@@ -2,10 +2,27 @@
     <div class="serverdata">
         <tab-system>
             <tab name="Info" :selected="true">
-                <status-tab :key="$store.state.selectedServer" />
+                <status-tab :key="$store.state.tabReset" />
             </tab>
             <tab name="Permissions" class="fullpage">
-                <permissions-tab :key="$store.state.selectedServer" />
+                <permissions-tab :key="$store.state.tabReset" />
+            </tab>
+            <tab name="Console" class="fullpage">
+                <template v-slot="{ selected }">
+                <console-tab :selected="selected" :key="$store.state.tabReset" v-if="$store.state.servers[$store.state.selectedServer].local" />
+                </template>
+            </tab>
+            <tab name="Operators">
+                <operators-tab :key="$store.state.tabReset" />
+            </tab>
+            <tab name="Worlds" class="fullpage">
+                <world-tab :key="$store.state.tabReset"></world-tab>
+            </tab>
+            <tab name="Properties">
+                
+            </tab>
+            <tab name="Whitelist">
+                
             </tab>
         </tab-system>
     </div>
@@ -16,12 +33,19 @@ import Tab from '../elements/Tab.vue'
 import TabSystem from '../pieces/TabSystem.vue'
 import StatusTab from '../tabs/Info.vue'
 import PermissionsTab from '../tabs/Permissions.vue'
+import ConsoleTab from '../tabs/Console.vue'
+import WorldTab from '../tabs/Worlds.vue'
+import OperatorsTab from '../tabs/Operators.vue'
+
 export default Vue.extend({
     components: {
         Tab,
         TabSystem,
         StatusTab,
-        PermissionsTab
+        PermissionsTab,
+        ConsoleTab,
+        WorldTab,
+        OperatorsTab
     }
 })
 </script>
@@ -37,7 +61,6 @@ export default Vue.extend({
 <style>
 h3 {
     display: inline-block;
-    /* margin-inline-start: 5px; */
     font-weight: normal;
 }
 </style>

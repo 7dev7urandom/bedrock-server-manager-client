@@ -16,8 +16,71 @@ export default {
     LoginForm,
     FullPage,
     Store
+  },
+  sockets: {
+    debug: function ({ msg }) {
+      console.log("Debug from server: ", msg);
+    },
+    permissionSetError({ reason }) {
+      console.log("Error: " + reason);
+    },
+    fullServerSend(data) {
+      if(!this.$store.state.servers[this.$store.state.selectedServer].local) {
+          this.$store.state.servers[this.$store.state.selectedServer].local = {};
+      }
+      const servers = this.$store.state.servers;
+      let index;
+      servers.find((val, i) => { index = i; return val.id === data.id });
+      // server = data;
+      const local = this.$store.state.servers[index].local;
+      this.$store.state.servers[index] = data;
+      this.$store.state.servers[index].local = local;
+      this.$store.state.tabReset++;
+      // setTimeout(() => {
+      //   this.$store.state.tabReset = !this.$store.state.tabReset;
+      // }, 1000);
+    },
+    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers }) {
+      // console.log("DATA SERVER UPDATE: " + consoleAppend + " " + properties);
+      if(consoleAppend) {
+        this.$store.state.servers.find(s => s.id === id).output += consoleAppend;
+      }
+      if(properties) {
+        this.$store.state.servers.find(s => s.id === id).properties = properties;
+      }
+      if(status) {
+        this.$store.state.servers.find(s => s.id === id).status = status;
+        if(status == 'Starting') this.$store.state.servers.find(s => s.id === id).output = '';
+      }
+      if(worlds) {
+        this.$store.state.servers.find(s => s.id === id).worlds = worlds;
+      }
+      if(currentWorld) {
+        this.$store.state.servers.find(s => s.id === id).currentWorld = currentWorld;
+      }
+      if(allowedUsers) {
+        this.$store.state.servers.find(s => s.id === id).allowedUsers = allowedUsers;
+      }
+      this.$store.state.tabReset++;
+    },
+    clobberAll({server}) {
+      const serverobj = this.$store.state.servers.find(s => s.id === server.id);
+      serverobj.version = server.version;
+      serverobj.onlinePlayers = server.onlinePlayers;
+      serverobj.access = server.access;
+      serverobj.status = server.status;
+      serverobj.controls19132 = server.controls19132;
+      serverobj.description = server.description;
+      serverobj.currentWorld = server.currentWorld;
+      serverobj.properties['max-players'] = server['max-players'];
+      serverobj.properties['server-port'] = server['server-port'];
+      serverobj.properties['server-name'] = server['server-name'];
+      // console.log("clobberall " + JSON.stringify(serverobj));
+      this.$store.state.tabReset++;
+    }
   }
 }
+
 </script>
 
 <style>
@@ -66,7 +129,6 @@ html {
     height: 100%;
     width: 100%;
     display: block;
-    vertical-align: top;
 }
 * {
   max-height: 100vh;
