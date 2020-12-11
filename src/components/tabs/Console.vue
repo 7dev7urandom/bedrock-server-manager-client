@@ -1,11 +1,10 @@
 <template>
     <div class="fullpage">
-        <h3>Console</h3>
         <div class="childfill1">
             <mc-button id="button" :click="scrollBottom" v-show="!atBottom">Down</mc-button>
         <div ref="consolebox" id="consolebox" class="childfill2 s04" @scroll="onScroll">
             <div class="fullpage" v-if="$store.state.servers[$store.state.selectedServer] && $store.state.servers[$store.state.selectedServer].output">
-                <pre v-for="(data, i) of $store.state.servers[$store.state.selectedServer].output.split('\n')" :key="i">{{ data }}</pre>
+                <pre v-for="(data, i) of $store.state.servers[$store.state.selectedServer].output.split('\n')" :key="i">{{ data.length > 0 ? data : " " }}</pre>
             </div>
         </div>
         </div>
@@ -47,17 +46,13 @@ export default {
     mounted() {
         const scroll = this.$refs.consolebox;
         const server = this.$store.state.servers[this.$store.state.selectedServer];
+        if(!scroll) return;
         if(!server) return;
         let local = server.local;
-        local = this.$store.state.servers[this.$store.state.selectedServer].local;
         const pos = local.consoleScrollPos;
-        if(!scroll) return;
-        // console.log(!pos, pos !== 0);
-        if(!scroll || !(!pos && pos !== 0)) return;
+        if(!scroll || (!pos && pos !== 0)) return;
         scroll.scrollTop = pos;
         this.$refs.textfield.focusBox();
-        // const scroll = this.$refs.consolebox;
-        // console.log(scroll.scrollTop + scroll.clientHeight, scroll.scrollHeight - 400);
         this.atBottom = scroll.scrollTop + scroll.clientHeight >= (scroll.scrollHeight - 400);
     },
     watch: {

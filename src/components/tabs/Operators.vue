@@ -7,7 +7,7 @@
                     <td>{{ user.player.username || 'Unknown player' }} <i>(XUID: {{ user.player.xuid }})</i></td>
                     <td class="rightside">
                         <select v-model="user.permission" @change="change(user)">
-                            <option v-for="perm of ['Operator', 'Member', 'Visitor']" :key="perm" :value="perm.toLowerCase()">{{ perm }}</option>
+                            <option v-for="perm of ['Operator', 'Member', 'Visitor', 'Default']" :key="perm" :value="perm.toLowerCase()">{{ perm }}</option>
                         </select>
                     </td>
                 </tr>

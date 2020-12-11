@@ -4,7 +4,7 @@
       <h3>By Micah Henney</h3>
         <span v-if="error" class="error">Wrong username or password</span>
       <br>
-        <input v-model="username" placeholder="Username" v-on:keyup.enter="submit"><br>
+        <input v-model="username" placeholder="Username" v-on:keyup.enter="submit" autofocus><br>
         <input type="password" placeholder="Password" v-model="password" v-on:keyup.enter="submit"><br>
         <button v-on:click="submit">Submit</button>
   </div>

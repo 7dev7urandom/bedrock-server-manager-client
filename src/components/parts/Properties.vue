@@ -19,11 +19,11 @@
                 <world-tab :key="$store.state.tabReset"></world-tab>
             </tab>
             <tab name="Properties">
-                
+                <properties-tab :key="$store.state.tabReset"></properties-tab>
             </tab>
-            <tab name="Whitelist">
-                
-            </tab>
+            <!-- <tab name="Whitelist">
+                <whitelist-tab :key="$store.state.tabReset"></whitelist-tab>
+            </tab> -->
         </tab-system>
     </div>
 </template>
@@ -36,6 +36,9 @@ import PermissionsTab from '../tabs/Permissions.vue'
 import ConsoleTab from '../tabs/Console.vue'
 import WorldTab from '../tabs/Worlds.vue'
 import OperatorsTab from '../tabs/Operators.vue'
+import PropertiesTab from '../tabs/Properties.vue'
+// eslint-disable-next-line
+import WhitelistTab from '../tabs/Whitelist.vue'
 
 export default Vue.extend({
     components: {
@@ -45,7 +48,9 @@ export default Vue.extend({
         PermissionsTab,
         ConsoleTab,
         WorldTab,
-        OperatorsTab
+        OperatorsTab,
+        PropertiesTab,
+        // WhitelistTab
     }
 })
 </script>
