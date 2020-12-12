@@ -1,24 +1,5 @@
-# bedrock-server-manager
+# bedrock-server-manager-client
 
-## Project setup
-```
-npm install
-```
+The client side for the [bedrock-server-manager](https://github.com/7dev7urandom/bedrock-server-manager) project. 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+To install a client to the server, put all files in the browser folder on the server. 
