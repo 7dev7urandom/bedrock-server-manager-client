@@ -4,7 +4,7 @@ import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io-extended';
 import Vuex from 'vuex';
 
-const SocketInstance = socketio('http://localhost:3000');
+const SocketInstance = socketio(window.location.host);
 
 Vue.use(VueSocketIO, SocketInstance);
 Vue.use(Vuex);
