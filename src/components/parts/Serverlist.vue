@@ -17,7 +17,7 @@ import Vue from 'vue';
 import ListItem from '../pieces/ListItem.vue';
 import Tab from '../elements/Tab.vue';
 import TabSystem from '../pieces/TabSystem.vue';
-import ServerListItem from '../pieces/ServerListItem.vue';
+import ServerListItem from '../pieces/ServerlistItem.vue';
 
 export default Vue.extend({
     // @ts-ignore
