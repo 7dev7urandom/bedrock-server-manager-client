@@ -1,6 +1,6 @@
 <template>
     <form v-on:submit.prevent="onSubmit" >
-        <input v-if="submit" type="submit" class="submit">
+        <input v-if="submit" type="submit" class="submit" value="Submit">
         <div>
             {{ title ? title : '' }}<input class="text" type="text" v-model="text" :placeholder="placeholder ? placeholder : ''" ref="box">
         </div>
