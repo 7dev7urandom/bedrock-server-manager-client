@@ -3,8 +3,11 @@ import App from './App.vue'
 import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io-extended';
 import Vuex from 'vuex';
-
-const SocketInstance = socketio(window.location.host);
+let SocketInstance;
+if(process.env && process.env.NODE_ENV !== "production")
+  SocketInstance = socketio('localhost:3000');
+else 
+  SocketInstance = socketio(window.location.host);
 
 Vue.use(VueSocketIO, SocketInstance);
 Vue.use(Vuex);
