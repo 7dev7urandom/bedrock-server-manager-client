@@ -40,7 +40,7 @@ export default {
       //   this.$store.state.tabReset = !this.$store.state.tabReset;
       // }, 1000);
     },
-    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers }) {
+    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output }) {
       // console.log("DATA SERVER UPDATE: " + consoleAppend + " " + properties);
       if(consoleAppend) {
         this.$store.state.servers.find(s => s.id === id).output += consoleAppend;
@@ -61,6 +61,10 @@ export default {
       if(allowedUsers) {
         this.$store.state.servers.find(s => s.id === id).allowedUsers = allowedUsers;
       }
+      if(typeof output == 'string') {
+        console.log("output");
+        this.$store.state.servers.find(s => s.id === id).output = output;
+      }
       this.$store.state.tabReset++;
     },
     clobberAll({server}) {
@@ -77,6 +81,9 @@ export default {
       serverobj.properties['server-name'] = server['server-name'];
       // console.log("clobberall " + JSON.stringify(serverobj));
       this.$store.state.tabReset++;
+    },
+    logout() {
+      window.location.reload(false);
     }
   }
 }
