@@ -69,7 +69,7 @@ export default {
     methods: {
         selectUser(id) {
             this.selectedUser = id;
-        }, // TODO: listen for socket error and give error box
+        }, 
         setValue(permission) {
             // Must be inline to preserve special vue `this` variable
             return ({ target }) => {

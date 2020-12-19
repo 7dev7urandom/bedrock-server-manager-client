@@ -114,8 +114,8 @@ export default {
                 // this.edited.properties['server-port'] = parseInt(this.edited.properties['server-port']);
                 for(let key in this.edited) {
                     this.$store.state.servers[this.$store.state.selectedServer].properties[key] = this.edited[key];
-                    this.$socket.client.emit('changeProperty', { properties: this.$store.state.servers[this.$store.state.selectedServer].properties, serverId: this.$store.state.servers[this.$store.state.selectedServer].id });
                 }
+                this.$socket.client.emit('changeProperty', { properties: this.$store.state.servers[this.$store.state.selectedServer].properties, serverId: this.$store.state.servers[this.$store.state.selectedServer].id });
             }
         },
         revert() {
@@ -125,7 +125,6 @@ export default {
             document.getElementById('infotabledesc').innerText = this.$store.state.servers[this.$store.state.selectedServer].description;
         },
         setBool(prop, val) {
-            // FIXME: work with mc switch
             console.log(prop, val);
             this.edited[prop] = !!val.target.checked;
         },
