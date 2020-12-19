@@ -29,13 +29,12 @@
                 </tr>
                 <tr>
                     <td>Status:</td>
-                    <!-- TODO -->
                     <td class="rightside"><span id="infotablestatus" :class="{ red: this.$store.state.servers[this.$store.state.selectedServer].status === 'Stopped', green: this.$store.state.servers[this.$store.state.selectedServer].status === 'Running', yellow: true}">{{ this.$store.state.servers[this.$store.state.selectedServer].status }}</span></td>
                     <!-- <td class="editbutton"><img src="pencil.png" alt="edit"></td> -->
                 </tr>
                 <tr>
                     <td>Players Online:</td>
-                    <td class="rightside"><span id="infotableplayersonline">{{ this.$store.state.servers[this.$store.state.selectedServer].onlinePlayers }}</span>/<span id="infotablemax-players">{{ this.$store.state.servers[this.$store.state.selectedServer].properties['max-players'] }}</span></td>
+                    <td class="rightside"><span id="infotableplayersonline">{{ this.$store.state.servers[this.$store.state.selectedServer].onlinePlayers.length }}</span>/<span id="infotablemax-players">{{ this.$store.state.servers[this.$store.state.selectedServer].properties['max-players'] }}</span></td>
                 </tr>
                 <tr>
                     <td>Version:</td>
@@ -87,8 +86,8 @@ export default {
                 this.edited.properties['server-port'] = parseInt(this.edited.properties['server-port']);
                 for(let key in this.edited) {
                     this.$store.state.servers[this.$store.state.selectedServer][key] = this.edited[key];
-                    this.$socket.client.emit('changeProperty', { properties: this.$store.state.servers[this.$store.state.selectedServer].properties, description: this.$store.state.servers[this.$store.state.selectedServer].description, serverId: this.$store.state.servers[this.$store.state.selectedServer].id });
                 }
+                this.$socket.client.emit('changeProperty', { properties: this.$store.state.servers[this.$store.state.selectedServer].properties, description: this.$store.state.servers[this.$store.state.selectedServer].description, serverId: this.$store.state.servers[this.$store.state.selectedServer].id });
             }
         },
         revert() {

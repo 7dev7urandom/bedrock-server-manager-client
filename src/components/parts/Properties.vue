@@ -12,7 +12,7 @@
                 <console-tab :selected="selected" :key="$store.state.tabReset" v-if="$store.state.servers[$store.state.selectedServer].local" />
                 </template>
             </tab>
-            <tab name="Operators">
+            <tab name="Players">
                 <operators-tab :key="$store.state.tabReset" />
             </tab>
             <tab name="Worlds" class="fullpage">

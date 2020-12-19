@@ -1,9 +1,24 @@
 <template>
     <div>
-        <h3>Server Operators</h3>
+        <h3>Players</h3>
+        <h4>Online</h4>
         <table v-if="!!this.$store.state.servers[this.$store.state.selectedServer] && !!this.$store.state.servers[this.$store.state.selectedServer].permissions" id="infotable">
             <tbody>
-                <tr v-for="user of $store.state.servers[$store.state.selectedServer].permissions" :key="user.player.xuid">
+                <tr v-for="user of $store.state.servers[$store.state.selectedServer].permissions.filter(user => $store.state.servers[$store.state.selectedServer].onlinePlayers.find(s => s.xuid === user.player.xuid))" :key="user.player.xuid">
+                    <td>{{ user.player.username || 'Unknown player' }} <i>(XUID: {{ user.player.xuid }})</i></td>
+                    <td class="rightside">
+                        <select v-model="user.permission" @change="change(user)">
+                            <option v-for="perm of ['Operator', 'Member', 'Visitor', 'Default']" :key="perm" :value="perm.toLowerCase()">{{ perm }}</option>
+                        </select>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        <h4>Offline</h4>
+        <table v-if="!!this.$store.state.servers[this.$store.state.selectedServer] && !!this.$store.state.servers[this.$store.state.selectedServer].permissions" id="infotable">
+            <tbody>
+                <tr v-for="user of $store.state.servers[$store.state.selectedServer].permissions.filter(user => !$store.state.servers[$store.state.selectedServer].onlinePlayers.find(s => s.xuid === user.player.xuid))" :key="user.player.xuid">
                     <td>{{ user.player.username || 'Unknown player' }} <i>(XUID: {{ user.player.xuid }})</i></td>
                     <td class="rightside">
                         <select v-model="user.permission" @change="change(user)">

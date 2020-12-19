@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td class="server-cell">{{ server.properties['server-port'] }}</td>
-            <td class="server-cell right-align" style="white-space: nowrap;" colspan="2">{{ server.onlinePlayers }}/{{ server.properties['max-players'] }} online</td>
+            <td class="server-cell right-align" style="white-space: nowrap;" colspan="2">{{ server.onlinePlayers.length }}/{{ server.properties['max-players'] }} online</td>
             <td class="server-cell right-align min-cell-size"> <img class="status-light" src="flag.png" alt="Controls 19132" title="This server controls port 19132" v-show="server.controls19132"> <img class="status-light" :src="computeImageURL"></td>
         </tr>
     </tbody>
