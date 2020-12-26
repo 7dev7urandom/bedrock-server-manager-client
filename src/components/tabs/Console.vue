@@ -31,7 +31,7 @@ export default {
         sendCommand(command) {
             this.$socket.client.emit("consoleCommand", { command });
             if(this.atBottom) {
-                this.$store.state.servers[this.$store.state.selectedServer].local.consoleScrollPos = this.$refs.consolebox.scrollTop + this.$refs.consolebox.clientHeight;
+                this.$store.state.servers[this.$store.state.selectedServer].local.consoleScrollPos = this.$refs.consolebox.scrollTop + this.$refs.consolebox.clientHeight + 500;
             }
         },
         scrollBottom() {

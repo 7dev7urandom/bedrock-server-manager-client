@@ -12,6 +12,7 @@
                     <td class="fullpage">
                         <div class="sizing">
                             <Properties v-if="$store.state.servers[$store.state.selectedServer]" />
+                            <create-server v-if="$store.state.selectedServer === -1" />
                         </div>
                     </td>
                 </tr>
@@ -24,6 +25,7 @@
 import Vue from 'vue'
 import Serverlist from './parts/Serverlist.vue'
 import Properties from './parts/Properties.vue'
+import CreateServer from './parts/CreateServer.vue'
 // import Dialog from './windows/Dialog.vue'
 
 export default Vue.extend({
@@ -31,6 +33,7 @@ export default Vue.extend({
     components: {
         Serverlist,
         Properties,
+        CreateServer
         // Dialog
     }
 })

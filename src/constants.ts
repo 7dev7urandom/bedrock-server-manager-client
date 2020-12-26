@@ -10,3 +10,11 @@ export class LocalPermissions {
     static CAN_EDIT_PERMISSIONS = 0b01000000;
     static IS_CREATOR_OF_SERVER = 0b10000000;
 }
+export class GlobalPermissions {
+    static readonly CAN_CREATE_SERVER =     0b00000001;
+    static readonly CAN_DELETE_SERVER =     0b00000010;
+    static readonly CAN_GRANT_PERMISSIONS = 0b00000100;
+    static readonly CAN_OVERRIDE_LOCAL =    0b00001000;
+    static readonly CAN_REFRESH_DB =        0b00010000;
+    // static readonly CAN_X =   0b00010000;
+}

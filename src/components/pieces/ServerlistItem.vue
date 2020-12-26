@@ -27,7 +27,7 @@ export default {
     methods: {
         selected() {
             this.$store.state.selectedServer = this.index;
-            this.$store.state.tabReset++;
+            // this.$store.state.tabReset++;
             this.$socket.client.emit('serverLoad', { serverId: this.$store.getters.currentServer.id });
             // this.select();
         }

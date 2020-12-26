@@ -41,9 +41,9 @@ export default {
         ListItem,
         UserlistItem
     },
-    data: () => {
+    data() {
         return {
-            selectedUser: 0,
+            selectedUser: this.$store.state.servers[this.$store.state.selectedServer].local.selectedUser || 0,
             LocalPermissions
         }
     },
@@ -69,6 +69,7 @@ export default {
     methods: {
         selectUser(id) {
             this.selectedUser = id;
+            this.$store.state.servers[this.$store.state.selectedServer].local.selectedUser = id;
         }, 
         setValue(permission) {
             // Must be inline to preserve special vue `this` variable

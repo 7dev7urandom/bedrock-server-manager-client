@@ -3,8 +3,11 @@
         <TabSystem v-show="$store.state.ready">
             <Tab name="Servers" :selected="true">
                 <div>
+                    <list-item :dark="false" :selected="$store.state.selectedServer === -1" v-if="$store.state.currentUserData.globalPermissions & GlobalPermissions.CAN_CREATE_SERVER">
+                        <div id="createnewdiv" v-on:click="createServer">Create New</div>
+                    </list-item>
                     <ListItem :dark="true" v-for="index in $store.state.servers.length" :selected="$store.state.selectedServer === index - 1" :key="$store.state.servers[index - 1].id">
-                        <ServerListItem :index="index - 1" :obj="$store.state.servers" :key="$store.state.tabReset"></ServerListItem>
+                        <ServerlistItem :index="index - 1" :obj="$store.state.servers" :key="$store.state.tabReset"></ServerlistItem>
                     </ListItem>
                 </div>
             </Tab>
@@ -17,7 +20,8 @@ import Vue from 'vue';
 import ListItem from '../pieces/ListItem.vue';
 import Tab from '../elements/Tab.vue';
 import TabSystem from '../pieces/TabSystem.vue';
-import ServerListItem from '../pieces/ServerlistItem.vue';
+import ServerlistItem from '../pieces/ServerlistItem.vue';
+import { GlobalPermissions } from '../../constants';
 
 export default Vue.extend({
     // @ts-ignore
@@ -34,15 +38,30 @@ export default Vue.extend({
                 s['server-port'] = undefined;
                 s['max-players'] = undefined;
                 s['server-name'] = undefined;
-            })
+            });
             this.$store.state.ready = true;
+            if(this.$store.state.servers.length) {
+                this.$socket.client.emit("serverLoad", { serverId: this.$store.state.servers[0].id });
+                this.$store.state.selectedServer = 0;
+            }
         }
     },
     components: {
         ListItem,
         Tab,
         TabSystem,
-        ServerListItem
+        ServerlistItem
+    },
+    methods: {
+        createServer() {
+            this.$store.state.selectedServer = -1;
+            this.$store.state.tabReset++;
+        }
+    },
+    data() {
+        return {
+            GlobalPermissions
+        }
     }
 })
 </script>
@@ -52,5 +71,12 @@ export default Vue.extend({
     height: 100%;
     float: left;
     /* position: static; */
+}
+#createnewdiv {
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    white-space: nowrap;
+    padding: 0 15px 0 15px;
 }
 </style>

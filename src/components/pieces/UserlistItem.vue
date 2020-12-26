@@ -1,7 +1,7 @@
 <template>
     <tbody v-on:click="selected(index)" class="width100">
         <tr class="listwhite width100"><td class="width100">
-            <div class="listcontent"><div class="dark">{{ obj.name }}</div><div style="">{{ obj.id === $store.state.currentUserData.id ? "[You]" : "" }} {{ obj.perm }} </div></div>
+            <div class="listcontent"><div class="dark">{{ obj.name }}</div><div style="color: gray;">{{ obj.id === $store.state.currentUserData.id ? "[You]" : "" }} {{ obj.perm }} </div></div>
         </td></tr>
         <!-- <tr class="server-row listwhite width100"><td class="width100">
             <div class="listcontent"><div class="dark">Ian</div><div>Admin</div></div>

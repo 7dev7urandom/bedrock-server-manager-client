@@ -1,21 +1,21 @@
 <template>
     <div class="serverdata">
-        <tab-system>
+        <tab-system ref="tsys">
             <tab name="Info" :selected="true">
                 <status-tab :key="$store.state.tabReset" />
             </tab>
             <tab name="Permissions" class="fullpage">
                 <permissions-tab :key="$store.state.tabReset" />
             </tab>
-            <tab name="Console" class="fullpage">
+            <tab name="Console" class="fullpage" v-if="LocalPermissions.CAN_USE_CONSOLE & this.$store.state.servers[this.$store.state.selectedServer].access">
                 <template v-slot="{ selected }">
                 <console-tab :selected="selected" :key="$store.state.tabReset" v-if="$store.state.servers[$store.state.selectedServer].local" />
                 </template>
             </tab>
-            <tab name="Players">
+            <tab name="Players" v-if="LocalPermissions.CAN_EDIT_PROPERTIES & this.$store.state.servers[this.$store.state.selectedServer].access">
                 <operators-tab :key="$store.state.tabReset" />
             </tab>
-            <tab name="Worlds" class="fullpage">
+            <tab name="Worlds" class="fullpage" v-if="(LocalPermissions.CAN_CREATE_WORLDS & this.$store.state.servers[this.$store.state.selectedServer].access) || (LocalPermissions.CAN_DELETE_WORLDS & this.$store.state.servers[this.$store.state.selectedServer].access)">
                 <world-tab :key="$store.state.tabReset"></world-tab>
             </tab>
             <tab name="Properties">
@@ -39,6 +39,7 @@ import OperatorsTab from '../tabs/Operators.vue'
 import PropertiesTab from '../tabs/Properties.vue'
 // eslint-disable-next-line
 import WhitelistTab from '../tabs/Whitelist.vue'
+import { LocalPermissions } from '../../constants';
 
 export default Vue.extend({
     components: {
@@ -51,6 +52,16 @@ export default Vue.extend({
         OperatorsTab,
         PropertiesTab,
         // WhitelistTab
+        
+    },
+    data() {
+        return {
+            LocalPermissions,
+            updater: 0
+        }
+    },
+    updated() {
+        (this.$refs.tsys as Vue & { updateTabs: () => void }).updateTabs();
     }
 })
 </script>

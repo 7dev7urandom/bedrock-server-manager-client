@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3>Server Info</h3>
-        <mc-button v-show="!!this.$store.state.servers[this.$store.state.selectedServer] && hasPermission" :dark="true" :click="edit" class="button" :pressed="editing">
+        <mc-button v-show="!!this.$store.state.servers[this.$store.state.selectedServer] && hasPermissionEdit" :dark="true" :click="edit" class="button" :pressed="editing">
             <img src="pencil.png" alt="edit" align="right">
         </mc-button>
         <mc-button v-show="editing" :dark="true" :click="revert" class="button">
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <mc-button :click="setStatus" style="width: calc(100% - 10px);" :disabled="$store.state.servers[$store.state.selectedServer].status === 'Starting' || $store.state.servers[$store.state.selectedServer].status === 'Stopping'">
+                        <mc-button :click="setStatus" style="width: calc(100% - 10px);" :disabled="$store.state.servers[$store.state.selectedServer].status === 'Starting' || $store.state.servers[$store.state.selectedServer].status === 'Stopping'" v-if="hasPermissionStatus">
                             {{ { "Running": "Stop", "Stopped": "Start", "Starting": "Starting...", "Stopping": "Stopping..."}[$store.state.servers[$store.state.selectedServer].status] }}
                         </mc-button>
                     </td>
@@ -116,8 +116,11 @@ export default {
         mcButton
     },
     computed: {
-        hasPermission() {
+        hasPermissionEdit() {
             return this.$store.state.servers[this.$store.state.selectedServer].access & LocalPermissions.CAN_EDIT_PROPERTIES;
+        },
+        hasPermissionStatus() {
+            return this.$store.state.servers[this.$store.state.selectedServer].access & LocalPermissions.CAN_SET_STATUS;
         }
     }
     // watch: {

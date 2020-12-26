@@ -25,13 +25,20 @@ export default {
       console.log("Error: " + reason);
     },
     fullServerSend(data) {
+
       if(!this.$store.state.servers[this.$store.state.selectedServer].local) {
           this.$store.state.servers[this.$store.state.selectedServer].local = {};
       }
       const servers = this.$store.state.servers;
       let index;
-      servers.find((val, i) => { index = i; return val.id === data.id });
-      // server = data;
+      const _tmp = servers.find((val, i) => { index = i; return val.id === data.id });
+      if(!_tmp) {
+        // We were sent a server info for a server we don't have
+        index = servers.length;
+        servers.push({});
+        servers[index].local = {};
+      }
+// server = data;
       const local = this.$store.state.servers[index].local;
       this.$store.state.servers[index] = data;
       this.$store.state.servers[index].local = local;
@@ -68,7 +75,14 @@ export default {
       this.$store.state.tabReset++;
     },
     clobberAll({server}) {
-      const serverobj = this.$store.state.servers.find(s => s.id === server.id);
+      let serverobj = this.$store.state.servers.find(s => s.id === server.id);
+      if(!serverobj) {
+        serverobj = {};
+        this.$store.state.servers.push(serverobj);
+        serverobj.properties = {};
+        serverobj.local = {};
+        serverobj.id = server.id;
+      }
       serverobj.version = server.version;
       serverobj.onlinePlayers = server.onlinePlayers;
       serverobj.access = server.access;
@@ -84,6 +98,17 @@ export default {
     },
     logout() {
       window.location.reload(false);
+    },
+    localPermUpdate({ serverId, /*newPermissions*/ }) {
+      // Line is redundant since it will be overwriten by load anyways
+      // this.$store.state.servers.find(s => s.id === serverId ).access = newPermissions;
+      this.$socket.client.emit("serverLoad", { serverId });
+    },
+    globalPermUpdate({ newPermissions }) {
+      // Record new permissions
+      this.$store.state.currentUserData.globalPermissions = newPermissions;
+      // Reload current server in case our new permissions includes CAN_OVERRIDE_LOCAL
+      this.$socket.client.emit("serverLoad", { serverId: this.$store.state.servers[this.$store.state.selectedServer].id });
     }
   }
 }

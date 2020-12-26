@@ -65,6 +65,7 @@ export default {
     border-bottom: #f7f7f7 2px solid;
 }
 .listlight {
+    color: #505050;
     border-spacing: 0;
     background-color: #c6c6c6;
     border-right: #656465 2px solid;
