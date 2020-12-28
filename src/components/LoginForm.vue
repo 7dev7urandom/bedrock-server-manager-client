@@ -1,7 +1,7 @@
 <template>
   <div v-show="!$store.state.loggedIn">
       <h1>Bedrock Server Manager</h1>
-      <h3>By Micah Henney</h3>
+      <h3>By 7dev7urandom</h3>
         <span v-if="error" class="error">Wrong username or password</span>
       <br>
         <input v-model="username" placeholder="Username" v-on:keyup.enter="submit" autofocus><br>
