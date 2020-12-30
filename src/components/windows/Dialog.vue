@@ -1,25 +1,19 @@
 <template>
     <div class="modal" @click.prevent.capture="modalClicked" ref="modal">
-        <div id="diabox">
+        <div id="diabox" ref="box">
             <border :ignoreScroll="true">
                 <slot></slot>
-                <div class="buttons">
-                    <mcbutton :click="done">Done</mcbutton>
-                    <mcbutton :click="cancel">Cancel</mcbutton>
-                </div>
             </border>
         </div>
     </div>
 </template>
 <script>
 import Border from '../helper/Border.vue';
-import mcbutton from '../elements/mcButton.vue';
 
 export default {
     name: "Dialog",
     components: {
-        Border,
-        mcbutton
+        Border
     },
     methods: {
         modalClicked(data) {
@@ -28,21 +22,26 @@ export default {
             this.cancel();
         }
     },
-    props: ['cancel', 'done']
+    mounted() {
+        if(this.width) {
+            this.$refs.box.style.setProperty('--element-width', this.width);
+        }
+        if(this.height) {
+            this.$refs.box.style.setProperty('--element-height', this.height);
+        }
+    },
+    props: ['cancel', 'height', 'width']
 }
 </script>
 <style scoped>
 #diabox {
+    --element-height: 400px;
+    --element-width: 600px;
     position: fixed;
-    left: calc(50% - 300px);
-    top: calc(50% - 200px);
-    height: 400px;
-    width: 600px;
-}
-.buttons {
-    position: absolute;
-    bottom: 15px;
-    right: 10px;
+    left: calc(50% - var(--element-width) / 2);
+    top: calc(50% - var(--element-height) / 2);
+    height: var(--element-height);
+    width: var(--element-width);
 }
 .modal {
     width: 100%;

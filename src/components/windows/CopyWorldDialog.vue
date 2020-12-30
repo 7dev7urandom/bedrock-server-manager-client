@@ -1,5 +1,5 @@
 <template>
-    <Dialog :cancel="cancel" :done="doneClicked">
+    <Dialog :cancel="cancel" :done="doneClicked" height="250px" width="800px">
         <h3>Copy World</h3>
         <textfield :value="nameValue" :title="'Name: '" :change="nameChanged"></textfield>
         Server:
@@ -8,18 +8,23 @@
         </select>
         <p v-show="existsError" class='red'>Error: That world already exists</p>
         <p v-show="notGeneratedError" class='red'>Error: That world can't be copied because it hasn't been generated</p>
+        <div class="buttons">
+            <mcButton :click="done">Done</mcButton>
+            <mcButton :click="cancel">Cancel</mcButton>
+        </div>
     </Dialog>    
 </template>
 
 <script>
 import Dialog from './Dialog.vue';
 import textfield from '../elements/textField.vue';
-
+import mcButton from '../elements/mcButton.vue';
 export default {
     props: ['done', 'cancel', 'nameValue', 'serverNames', 'curServer'],
     components: {
         Dialog,
-        textfield
+        textfield,
+        mcButton
     },
     sockets: { // SOCKET ISN'T BEING CALLED
         serverCopyResponse(data) {
@@ -56,3 +61,10 @@ export default {
     }
 }
 </script>
+<style scoped>
+.buttons {
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
+}
+</style>

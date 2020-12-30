@@ -47,7 +47,7 @@ export default {
       //   this.$store.state.tabReset = !this.$store.state.tabReset;
       // }, 1000);
     },
-    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output }) {
+    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions }) {
       // console.log("DATA SERVER UPDATE: " + consoleAppend + " " + properties);
       if(consoleAppend) {
         this.$store.state.servers.find(s => s.id === id).output += consoleAppend;
@@ -69,8 +69,10 @@ export default {
         this.$store.state.servers.find(s => s.id === id).allowedUsers = allowedUsers;
       }
       if(typeof output == 'string') {
-        console.log("output");
         this.$store.state.servers.find(s => s.id === id).output = output;
+      }
+      if(permissions) {
+        this.$store.state.servers.find(s => s.id === id).permissions = permissions;
       }
       this.$store.state.tabReset++;
     },
