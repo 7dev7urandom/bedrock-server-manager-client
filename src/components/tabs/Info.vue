@@ -54,6 +54,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Type:</td>
+                    <td class="rightside">
+                        <span>{{ $store.state.servers[$store.state.selectedServer].type }}</span>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <mc-button :click="setStatus" style="width: calc(100% - 10px);" :disabled="$store.state.servers[$store.state.selectedServer].status === 'Starting' || $store.state.servers[$store.state.selectedServer].status === 'Stopping'" v-if="hasPermissionStatus">
                             {{ { "Running": "Stop", "Stopped": "Start", "Starting": "Starting...", "Stopping": "Stopping..."}[$store.state.servers[$store.state.selectedServer].status] }}
