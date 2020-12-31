@@ -6,15 +6,15 @@
             </div>
             <text-field title="Name" placeholder="Dedicated Server" :change="setName" />
             <text-field title="Description" placeholder="My server" :change="setDesc" />
-            Version
-            <select v-model="version">
-                <option v-for="versionI of globalMCVersions" :key="versionI" :value="versionI">{{ versionI }}</option>
-            </select>
-            <br />
             Type
             <select v-model="type">
                 <option value="vanilla">Vanilla</option>
                 <option value="bdsx">BDSx</option>
+            </select>
+            <br />
+            Version
+            <select v-model="version">
+                <option v-for="versionI of ( type === 'bdsx' ? bdsxVersions : globalMCVersions)" :key="versionI" :value="versionI">{{ versionI }}</option>
             </select>
             <br />
             <mc-button :click="submit" :disabled="!(name && description && version && type)">Create</mc-button>
@@ -83,6 +83,11 @@ export default {
         },
         progressBarFinished({ id }) {
             if(id === this.progressId) this.creating = false;
+        }
+    },
+    watch: {
+        type(newVal) {
+            if(newVal === 'bdsx' && this.bdsxVersions.indexOf(this.version) < 0) this.version = this.bdsxVersions[0];
         }
     }
 }
