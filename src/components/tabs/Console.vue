@@ -4,7 +4,7 @@
             <mc-button id="button" :click="scrollBottom" v-show="!atBottom">Down</mc-button>
         <div ref="consolebox" id="consolebox" class="childfill2 s04" @scroll="onScroll">
             <div class="fullpage" v-if="$store.state.servers[$store.state.selectedServer] && $store.state.servers[$store.state.selectedServer].output">
-                <pre v-for="(data, i) of $store.state.servers[$store.state.selectedServer].output.split('\n')" :key="i">{{ data.length > 0 ? data : " " }}</pre>
+                <pre v-for="(data, i) of $store.state.servers[$store.state.selectedServer].output.split('\n').map(x => doColor(x))" :key="i" v-html='data.length > 0 ? data : " "'></pre>
             </div>
         </div>
         </div>
@@ -15,6 +15,8 @@
 <script>
 import textField from '../elements/textField.vue';
 import mcButton from '../elements/mcButton.vue';
+import { default as AU } from 'ansi_up';
+const ansi_up = new AU();
 
 export default {
     props: ['selected'],
@@ -44,6 +46,9 @@ export default {
         },
         change(val) {
             this.$store.state.servers[this.$store.state.selectedServer].local.consoleInput = val;
+        },
+        doColor(x) {
+            return ansi_up.ansi_to_html(x);
         }
     },
     mounted() {
@@ -103,6 +108,8 @@ pre {
     word-wrap: break-word;
     word-break: break-all;
     margin-inline-start: 5px;
+    margin-block-end: 0px;
+    margin-block-start: 5px;
 }
 #button {
     position: absolute;

@@ -7,12 +7,12 @@
             <text-field title="Name" placeholder="Dedicated Server" :change="setName" />
             <text-field title="Description" placeholder="My server" :change="setDesc" />
             <!--
-                BDSX is currently broken with wine. Just disable it for now
+                BDSX is currently broken with wine. Just disable it for now -->
             Type
             <select v-model="type">
                 <option value="vanilla">Vanilla</option>
                  <option value="bdsx">BDSx</option> 
-            </select> -->
+            </select>
             <br />
             Version
             <select v-model="version">

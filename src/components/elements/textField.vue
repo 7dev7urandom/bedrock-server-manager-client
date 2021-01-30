@@ -59,7 +59,7 @@ input.submit {
     border-top: #f7f7f7 3px solid;
     border-left: #f7f7f7 3px solid;
     font: 400 16px Minecraftia;
-    /* padding: 10px; */
+    padding: 9px;
     color: #505050;
     background-color: #c6c6c6;
     /* outline: 2px solid black; */

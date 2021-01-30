@@ -5,7 +5,7 @@
                     <span >{{ server.properties['server-name'] }}</span>
                 </div></td>
 
-            <td class="server-cell right-align">{{ server.version }}</td>
+            <td class="server-cell right-align">{{ server.type === 'bdsx' ? "bdsx" : server.version }}</td>
             <td class="server-cell right-align min-cell-size" :class="server.status === 'Running' ? 'green' : server.status === 'Stopped' ? 'red' : 'yellow'">{{ server.status }}</td>
         </tr>
         <tr class="heightzero">

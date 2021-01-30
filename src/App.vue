@@ -9,13 +9,15 @@
 import LoginForm from './components/LoginForm.vue'
 import FullPage from './components/FullPage.vue'
 import Store from './components/Store.vue'
+import Dialog from './components/windows/Dialog.vue'
 
 export default {
   name: 'App',
   components: {
     LoginForm,
     FullPage,
-    Store
+    Store,
+    Dialog
   },
   sockets: {
     debug: function ({ msg }) {
@@ -47,7 +49,7 @@ export default {
       //   this.$store.state.tabReset = !this.$store.state.tabReset;
       // }, 1000);
     },
-    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions }) {
+    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions, scripts }) {
       // console.log("DATA SERVER UPDATE: " + consoleAppend + " " + properties);
       if(consoleAppend) {
         this.$store.state.servers.find(s => s.id === id).output += consoleAppend;
@@ -73,6 +75,9 @@ export default {
       }
       if(permissions) {
         this.$store.state.servers.find(s => s.id === id).permissions = permissions;
+      }
+      if(scripts) {
+        this.$store.state.servers.find(s => s.id === id).scripts = scripts;
       }
       this.$store.state.tabReset++;
     },
@@ -111,6 +116,16 @@ export default {
       this.$store.state.currentUserData.globalPermissions = newPermissions;
       // Reload current server in case our new permissions includes CAN_OVERRIDE_LOCAL
       this.$socket.client.emit("serverLoad", { serverId: this.$store.state.servers[this.$store.state.selectedServer].id });
+    },
+    infoWindow({ msg }) {
+      this.errorText = msg;
+      this.error = true;
+    }
+  },
+  data() {
+    return {
+      error: false,
+      errorText: ''
     }
   }
 }
@@ -175,6 +190,9 @@ html {
 
 <template>
   <div id="app">
+    <div v-if="error">
+        <Dialog :cancel="() => { error = false }">{{ errorText }}</Dialog>
+    </div>
     <Store :store="$store.state" />
     <LoginForm />
     <FullPage />

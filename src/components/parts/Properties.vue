@@ -21,6 +21,9 @@
             <tab name="Properties">
                 <properties-tab :key="$store.state.tabReset"></properties-tab>
             </tab>
+            <tab name="Scripts" v-if="this.$store.state.servers[this.$store.state.selectedServer].type === 'bdsx' && $store.state.currentUserData.globalPermissions & GlobalPermissions.CAN_MANAGE_SCRIPTS">
+                <scripts-tab :key="$store.state.tabReset"></scripts-tab>
+            </tab>
             <!-- <tab name="Whitelist">
                 <whitelist-tab :key="$store.state.tabReset"></whitelist-tab>
             </tab> -->
@@ -39,7 +42,8 @@ import OperatorsTab from '../tabs/Operators.vue'
 import PropertiesTab from '../tabs/Properties.vue'
 // eslint-disable-next-line
 import WhitelistTab from '../tabs/Whitelist.vue'
-import { LocalPermissions } from '../../constants';
+import { LocalPermissions, GlobalPermissions } from '../../constants';
+import ScriptsTab from '../tabs/Scripts.vue';
 
 export default Vue.extend({
     components: {
@@ -52,11 +56,12 @@ export default Vue.extend({
         OperatorsTab,
         PropertiesTab,
         // WhitelistTab
-        
+        ScriptsTab
     },
     data() {
         return {
             LocalPermissions,
+            GlobalPermissions,
             updater: 0
         }
     },

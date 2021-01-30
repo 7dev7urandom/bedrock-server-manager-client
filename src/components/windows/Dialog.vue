@@ -1,5 +1,5 @@
 <template>
-    <div class="modal" @click.prevent.capture="modalClicked" ref="modal">
+    <div class="modal" @click.capture="modalClicked" ref="modal">
         <div id="diabox" ref="box">
             <border :ignoreScroll="true">
                 <slot></slot>
@@ -17,8 +17,8 @@ export default {
     },
     methods: {
         modalClicked(data) {
-            if(data.target !== this.$refs.modal) return;
             // console.log(data);
+            if(data.target !== this.$refs.modal) return;
             this.cancel();
         }
     },

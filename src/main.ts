@@ -36,7 +36,7 @@ Vue.mixin({
         return ['1.16.201.02', '1.16.200.02'];
       },
       get bdsxVersions() {
-        return ['1.16.200.02'];
+        return ['1.16.201.02'];
       }
     }
   }
