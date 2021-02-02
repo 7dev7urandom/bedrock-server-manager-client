@@ -14,11 +14,12 @@
                  <option value="bdsx">BDSx</option> 
             </select>
             <br />
-            Version
-            <select v-model="version">
-                <option v-for="versionI of ( type === 'bdsx' ? bdsxVersions : globalMCVersions)" :key="versionI" :value="versionI">{{ versionI }}</option>
-            </select>
-            <br />
+            <div v-show="type !== 'bdsx'">
+                Version
+                <select v-model="version">
+                    <option v-for="versionI of ( type === 'bdsx' ? bdsxVersions : globalMCVersions)" :key="versionI" :value="versionI">{{ versionI }}</option>
+                </select>
+            </div>
             <mc-button :click="submit" :disabled="!(name && description && version && type)">Create</mc-button>
             <!-- <mc-button :click="showTestDialog">Test bar</mc-button> -->
         </tab>
