@@ -12,7 +12,7 @@
                 <console-tab :selected="selected" :key="$store.state.tabReset" v-if="$store.state.servers[$store.state.selectedServer].local" />
                 </template>
             </tab>
-            <tab name="Players" v-if="LocalPermissions.CAN_EDIT_PROPERTIES & this.$store.state.servers[this.$store.state.selectedServer].access">
+            <tab name="Players">
                 <operators-tab :key="$store.state.tabReset" />
             </tab>
             <tab name="Worlds" class="fullpage" v-if="(LocalPermissions.CAN_CREATE_WORLDS & this.$store.state.servers[this.$store.state.selectedServer].access) || (LocalPermissions.CAN_DELETE_WORLDS & this.$store.state.servers[this.$store.state.selectedServer].access)">
