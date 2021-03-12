@@ -1,7 +1,7 @@
 <template>
     <label class="switch" :title="disabled ? 'You cannot change this' : ''">
         <input @change="change" type="checkbox" :checked="value" :disabled="disabled">
-        <span class="switchinternal">
+        <span :class="{ switchinternal: true, noText: !$slots.default }">
             <span class="switchtab">
                 <span class="switchtabborder"></span>
             </span>
@@ -23,13 +23,21 @@ export default {
     margin-inline-start: 6em;
     margin-top: 0.6em;
     display: inline-block;
+    /* position: absolute; */
 }
 .tint {
     color: #999;
 }
+.noText {
+    width: 0;
+    right: -10px;
+}
 .switch {
     display: block;
     margin: 10px;
+    /* left: -65px;
+    top: -30px; */
+    position: relative;
 }
 .switch input {
     opacity: 0;

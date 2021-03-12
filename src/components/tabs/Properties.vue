@@ -48,7 +48,7 @@
                     <td>Cheats:</td>
                     <td class="rightside">
                         <span v-show="!editing">{{ this.$store.state.servers[this.$store.state.selectedServer].properties['allow-cheats'] ? 'On' : 'Off' }}</span>
-                        <mcswitch style="position: relative; left: 16px; top: -13px;" v-show="editing" :change="setBool.bind(this, 'allow-cheats')" :value="edited['allow-cheats']" />
+                        <mcswitch v-show="editing" :change="setBool.bind(this, 'allow-cheats')" :value="edited['allow-cheats']" />
                     </td>
                 </tr>
                 <tr>
@@ -84,7 +84,7 @@
                     <td>Autostart:</td>
                     <td class="rightside">
                         <span v-show="!editing">{{ this.$store.state.servers[this.$store.state.selectedServer].properties['autostart'] ? 'On' : 'Off' }}</span>
-                        <mcswitch style="position: relative; left: 16px; top: -13px;" v-show="editing" :change="setBool.bind(this, 'autostart')" :value="edited['autostart']" />
+                        <mcswitch v-show="editing" :change="setBool.bind(this, 'autostart')" :value="edited['autostart']" />
                     </td>
                 </tr>
            </tbody>

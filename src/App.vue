@@ -49,35 +49,39 @@ export default {
       //   this.$store.state.tabReset = !this.$store.state.tabReset;
       // }, 1000);
     },
-    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions, scripts }) {
+    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions, scripts, scriptingTabs }) {
+      const server = this.$store.state.servers.find(s => s.id === id);
       // console.log("DATA SERVER UPDATE: " + consoleAppend + " " + properties);
       if(consoleAppend) {
-        this.$store.state.servers.find(s => s.id === id).output += consoleAppend;
+        server.output += consoleAppend;
       }
       if(properties) {
-        this.$store.state.servers.find(s => s.id === id).properties = properties;
+        server.properties = properties;
       }
       if(status) {
-        this.$store.state.servers.find(s => s.id === id).status = status;
-        if(status == 'Starting') this.$store.state.servers.find(s => s.id === id).output = '';
+        server.status = status;
+        if(status == 'Starting') server.output = '';
       }
       if(worlds) {
-        this.$store.state.servers.find(s => s.id === id).worlds = worlds;
+        server.worlds = worlds;
       }
       if(currentWorld) {
-        this.$store.state.servers.find(s => s.id === id).currentWorld = currentWorld;
+        server.currentWorld = currentWorld;
       }
       if(allowedUsers) {
-        this.$store.state.servers.find(s => s.id === id).allowedUsers = allowedUsers;
+        server.allowedUsers = allowedUsers;
       }
       if(typeof output == 'string') {
-        this.$store.state.servers.find(s => s.id === id).output = output;
+        server.output = output;
       }
       if(permissions) {
-        this.$store.state.servers.find(s => s.id === id).permissions = permissions;
+        server.permissions = permissions;
       }
       if(scripts) {
-        this.$store.state.servers.find(s => s.id === id).scripts = scripts;
+        server.scripts = scripts;
+      }
+      if(scriptingTabs) {
+        server.scriptingTabs = scriptingTabs;
       }
       this.$store.state.tabReset++;
     },

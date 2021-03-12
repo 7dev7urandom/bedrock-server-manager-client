@@ -27,6 +27,13 @@
             <!-- <tab name="Whitelist">
                 <whitelist-tab :key="$store.state.tabReset"></whitelist-tab>
             </tab> -->
+            <template v-if="$store.state.servers[$store.state.selectedServer].type === 'bdsx' && $store.state.servers[$store.state.selectedServer].scriptingTabs">
+                <tab v-for="tab of $store.state.servers[$store.state.selectedServer].scriptingTabs" :key="`>${tab.name}`" :name="`${tab.name}`">
+                    <table id="infotable">
+                        <ScriptTabElement v-for="prop of tab.properties" :key="prop.id" :prop="prop" :changeVal="scriptTabUpdated(tab.name, prop.id)" />
+                    </table>
+                </tab>
+            </template>
         </tab-system>
     </div>
 </template>
@@ -44,6 +51,7 @@ import PropertiesTab from '../tabs/Properties.vue'
 import WhitelistTab from '../tabs/Whitelist.vue'
 import { LocalPermissions, GlobalPermissions } from '../../constants';
 import ScriptsTab from '../tabs/Scripts.vue';
+import ScriptTabElement from '../pieces/ScriptTabElement.vue';
 
 export default Vue.extend({
     components: {
@@ -56,7 +64,8 @@ export default Vue.extend({
         OperatorsTab,
         PropertiesTab,
         // WhitelistTab
-        ScriptsTab
+        ScriptsTab,
+        ScriptTabElement
     },
     data() {
         return {
@@ -67,6 +76,13 @@ export default Vue.extend({
     },
     updated() {
         (this.$refs.tsys as Vue & { updateTabs: () => void }).updateTabs();
+    },
+    methods: {
+        scriptTabUpdated(tab: string, id: string) {
+            return (value: any) => {
+                this.$socket.client.emit("changeScriptSetting", { tab, id, value, serverId: this.$store.state.servers[this.$store.state.selectedServer].id })
+            }
+        }
     }
 })
 </script>
@@ -77,6 +93,12 @@ export default Vue.extend({
 }
 .fullpage {
     height: 100%;
+}
+#infotable {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 5px;
+    display: block;
 }
 </style>
 <style>
