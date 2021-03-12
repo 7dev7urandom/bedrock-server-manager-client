@@ -33,10 +33,7 @@ Vue.mixin({
   data: () => {
     return {
       get globalMCVersions() {
-        return ['1.16.201.02', '1.16.200.02'];
-      },
-      get bdsxVersions() {
-        return ['1.16.201.02'];
+        return ['1.16.201.02', '1.16.200.02', '1.16.210.05'];
       }
     }
   }
