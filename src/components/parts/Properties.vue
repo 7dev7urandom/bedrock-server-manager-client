@@ -29,7 +29,7 @@
             </tab> -->
             <template v-if="$store.state.servers[$store.state.selectedServer].type === 'bdsx' && $store.state.servers[$store.state.selectedServer].scriptingTabs">
                 <tab v-for="tab of $store.state.servers[$store.state.selectedServer].scriptingTabs" :key="`>${tab.name}`" :name="`${tab.name}`">
-                    <table id="infotable">
+                    <table id="infotable" :key="$store.state.tabReset">
                         <ScriptTabElement v-for="prop of tab.properties" :key="prop.id" :prop="prop" :changeVal="scriptTabUpdated(tab.name, prop.id)" />
                     </table>
                 </tab>
