@@ -12,17 +12,18 @@
                 </form>
             </Dialog>
         </div>
+        <div>
+            Update plugin:
+            <br>
+            <text-input :submit="updateGit" placeholder="example-plugin"></text-input>
+        </div>
         <div v-if="isZip">
             Last batch uploaded: {{ timeToString }}
             <br>
             Uploaded by: {{ $store.state.servers[$store.state.selectedServer].scripts.uploadedAuthor }}
         </div>
         <div v-else-if="!isZip">
-            Last updated: {{ timeToString }}
             <br>
-            Repository: {{ $store.state.servers[$store.state.selectedServer].scripts.repo }}
-            <br>
-            <mc-button :click="updateGit">Update</mc-button>
         </div>
         <div>
             Set Repo: <text-input :submit="setRepo" placeholder="https://github.com/bdsx/bdsx"></text-input><br>
@@ -53,9 +54,10 @@ export default {
         Dialog
     },
     methods: {
-        updateGit() {
+        updateGit(plugin) {
             this.$socket.client.emit("updateGit", {
-                serverId: this.$store.state.servers[this.$store.state.selectedServer].id
+                serverId: this.$store.state.servers[this.$store.state.selectedServer].id,
+                plugin
             });
         },
         upload() {

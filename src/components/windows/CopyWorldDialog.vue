@@ -1,5 +1,5 @@
 <template>
-    <Dialog :cancel="cancel" :done="doneClicked" height="250px" width="800px">
+    <Dialog :cancel="cancel" height="250px" width="800px">
         <h3>Copy World</h3>
         <textfield :value="nameValue" :title="'Name: '" :change="nameChanged"></textfield>
         Server:
@@ -9,7 +9,7 @@
         <p v-show="existsError" class='red'>Error: That world already exists</p>
         <p v-show="notGeneratedError" class='red'>Error: That world can't be copied because it hasn't been generated</p>
         <div class="buttons">
-            <mcButton :click="done">Done</mcButton>
+            <mcButton :click="doneClicked" :disabled="disabled">Done</mcButton>
             <mcButton :click="cancel">Cancel</mcButton>
         </div>
     </Dialog>    
@@ -38,7 +38,9 @@ export default {
                 if(data.reason.includes('generated yet')) {
                     this.notGeneratedError = true;
                 }
-                // this.closeCopyWorld();
+                this.disabled = false;
+            } else {
+                this.cancel();
             }
         }
     },
@@ -46,6 +48,7 @@ export default {
         doneClicked() {
             // console.log(this.name, this.server);
             this.done(this.name, this.server);
+            this.disabled = true;
         },
         nameChanged(val) {
             this.name = val;
@@ -56,7 +59,8 @@ export default {
             name: '',
             server: this.curServer.id,
             existsError: false,
-            notGeneratedError: false
+            notGeneratedError: false,
+            disabled: false
         }
     }
 }

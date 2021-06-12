@@ -100,7 +100,7 @@ export default {
             });
         },
         closeCopyWorld() {
-            if(!this.waitingForCopy) this.copyWindowing = false;
+            this.copyWindowing = false;
         },
         deleteWorld() {
             if(!this.deleteConfirm) {
@@ -139,7 +139,6 @@ export default {
             newSeed: '',
             newLevelType: 'DEFAULT',
             copyWindowing: false,
-            waitingForCopy: false,
             deleteConfirm: false
         }
     }
