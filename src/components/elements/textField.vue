@@ -1,10 +1,13 @@
 <template>
-    <form v-on:submit.prevent="onSubmit" >
-        <input v-if="submit" type="submit" class="submit" value="Submit">
-        <div>
-            {{ title ? title : '' }}<input class="text" type="text" v-model="text" :placeholder="placeholder ? placeholder : ''" ref="box">
-        </div>
-    </form>
+    <div>
+        {{ title ? title : '' }}
+        <form v-on:submit.prevent="onSubmit" >
+            <input v-if="submit" type="submit" class="submit" value="Submit">
+            <div>
+                <input class="text" type="text" v-model="text" :placeholder="placeholder ? placeholder : ''" ref="box">
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>

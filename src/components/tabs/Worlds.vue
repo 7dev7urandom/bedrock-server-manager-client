@@ -26,7 +26,7 @@
                                     {{ $store.state.servers[$store.state.selectedServer].properties['level-name'] === selectedWorldId ? "Active" : "Use" }}
                                 </mc-button>
                                 <mc-button :click="copyWorld" class="mcbutton" v-show="$store.state.servers[$store.state.selectedServer].access & LocalPermissions.CAN_CREATE_WORLDS && $store.state.servers[$store.state.selectedServer].worlds[selectedWorldId] && $store.state.servers[$store.state.selectedServer].worlds[selectedWorldId].generated">Copy</mc-button>
-                                <mc-button :click="deleteWorld" :class="{ mcbutton: true, red: deleteConfirm }" v-show="$store.state.servers[$store.state.selectedServer].access & LocalPermissions.CAN_DELETE_WORLDS">{{ deleteConfirm ? 'Confirm?' : 'Delete' }}</mc-button>
+                                <mc-button :click="deleteWorld" :class="{ mcbutton: true, red: true }" v-show="$store.state.servers[$store.state.selectedServer].access & LocalPermissions.CAN_DELETE_WORLDS">{{ deleteConfirm ? 'Confirm?' : 'Delete' }}</mc-button>
                                 <p v-show="$store.state.servers[$store.state.selectedServer].currentWorld === selectedWorldId && $store.state.servers[$store.state.selectedServer].properties['level-name'] !== selectedWorldId">
                                     <i>This world is currently running, but not selected. Once the server restarts, the world will change to '{{ $store.state.servers[$store.state.selectedServer].properties['level-name'] }}'</i>
                                 </p>
@@ -54,7 +54,7 @@
 
 <script>
 import ListItem from '../pieces/ListItem.vue'
-import WorldListItem from '../pieces/WorldListItem.vue'
+import WorldListItem from '../pieces/ListItemElement.vue'
 import mcButton from '../elements/mcButton.vue'
 import textField from '../elements/textField.vue'
 import { LocalPermissions } from '../../constants'

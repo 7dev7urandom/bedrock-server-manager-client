@@ -1,5 +1,15 @@
 <template>
     <div>
+        <Dialog v-show="showConfirm" :cancel="() => showConfirm = confirmDel = false" height="250px" width="600px">
+            <h3>Are you sure?</h3><br>
+            {{ deletingAll ? "You are about to delete this server forever, from the database AND THE DISK." : "You are about to remove this server from the database. "}}
+            <br><br>
+            The server will be gone forever (a long time)
+            <div class="buttons">
+                <mcButton :click="deleteServer" class="red">Delete it!</mcButton>
+                <mcButton :click="() => showConfirm = confirmDel = false">Cancel</mcButton>
+            </div>
+        </Dialog>
         <h3>Server Info</h3>
         <mc-button v-show="!!this.$store.state.servers[this.$store.state.selectedServer] && hasPermissionEdit" :dark="true" :click="edit" class="button" :pressed="editing">
             <img src="pencil.png" alt="edit" align="right">
@@ -66,6 +76,19 @@
                         </mc-button>
                     </td>
                 </tr>
+                <tr v-show="$store.state.currentUserData.globalPermissions & GlobalPermissions.CAN_DELETE_SERVER">
+                    <td colspan="2">
+                        <mc-button :click="confirmDelete" style="width: calc(100% - 10px);" class="red" :disabled="serverDeleting" v-show="!confirmDel">
+                            Delete
+                        </mc-button>
+                        <mc-button :click="confirmDeleteDialog.bind(this, true)" style="width: calc(50% - 8px);" class="red" v-show="confirmDel">
+                            Delete all data
+                        </mc-button>
+                        <mc-button :click="confirmDeleteDialog.bind(this, false)" style="width: calc(50% - 8px);" class="red" v-show="confirmDel">
+                            Remove from database
+                        </mc-button>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <p v-show="!this.$store.state.servers[this.$store.state.selectedServer]">No server selected</p>
@@ -73,16 +96,26 @@
 </template>
 <script>
 import mcButton from '../elements/mcButton.vue';
-import { LocalPermissions } from '../../constants';
+import { LocalPermissions, GlobalPermissions } from '../../constants';
+import Dialog from '../windows/Dialog.vue';
 
 export default {
     data: () => {
         return {
             editing: false,
             edited: { properties: {} },
+            serverDeleting: false,
+            GlobalPermissions,
+            confirmDel: false,
+            deletingAll: false,
+            showConfirm: false
         }
     },
     methods: {
+        confirmDelete() {
+            this.confirmDel = true;
+            console.log("test");
+        },
         edit() {
             this.editing = !this.editing;
             if(this.editing) {
@@ -116,10 +149,22 @@ export default {
             } else if (this.$store.state.servers[this.$store.state.selectedServer].status === "Stopped") {
                 this.$socket.client.emit("changeStatus", { serverId: this.$store.state.servers[this.$store.state.selectedServer].id, status: "Start" });
             }
+        },
+        deleteServer() {
+            this.serverDeleting = true;
+            this.$socket.client.emit('deleteServer', {
+                serverId: this.$store.state.servers[this.$store.state.selectedServer].id,
+                deleteData: this.deletingAll
+            })
+        },
+        confirmDeleteDialog(deleteData) {
+            this.deletingAll = deleteData;
+            this.showConfirm = true;
         }
     },
     components: {
-        mcButton
+        mcButton,
+        Dialog
     },
     computed: {
         hasPermissionEdit() {
@@ -158,5 +203,10 @@ img {
 } */
 td:not(.rightside) {
     white-space: nowrap;
+}
+.buttons {
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
 }
 </style>

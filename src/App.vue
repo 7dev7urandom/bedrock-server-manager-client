@@ -49,7 +49,7 @@ export default {
       //   this.$store.state.tabReset = !this.$store.state.tabReset;
       // }, 1000);
     },
-    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions, scripts, scriptingTabs }) {
+    serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions, plugins, scriptingTabs }) {
       const server = this.$store.state.servers.find(s => s.id === id);
       // console.log("DATA SERVER UPDATE: " + consoleAppend + " " + properties);
       if(consoleAppend) {
@@ -77,8 +77,8 @@ export default {
       if(permissions) {
         server.permissions = permissions;
       }
-      if(scripts) {
-        server.scripts = scripts;
+      if(plugins) {
+        server.plugins = plugins;
       }
       if(scriptingTabs) {
         server.scriptingTabs = scriptingTabs;
@@ -124,6 +124,12 @@ export default {
     infoWindow({ msg }) {
       this.errorText = msg;
       this.error = true;
+    },
+    serverDeleted({ serverId }) {
+      const index = (this.$store.state.servers).findIndex(server => serverId === server.id);
+      this.$store.state.servers.splice(index, 1);
+      if(index === this.$store.state.selectedServer) this.$store.state.selectedServer = -1;
+      this.$store.state.tabReset++;
     }
   },
   data() {
@@ -137,13 +143,13 @@ export default {
 </script>
 
 <style>
-.yellow {
+.yellow, .yellow > button {
     color: rgb(200, 200, 0);
 }
-.red {
-    color: rgb(200, 0, 0);
+.red, .red > button {
+    color: rgb(200, 0, 0) !important;
 }
-.green {
+.green, .green > button {
     color: rgb(0, 200, 0);
 }
 img {

@@ -26,7 +26,7 @@ export default {
         textfield,
         mcButton
     },
-    sockets: { // SOCKET ISN'T BEING CALLED
+    sockets: {
         serverCopyResponse(data) {
             console.log(data);
             if(!data.success) {
