@@ -6,13 +6,24 @@
                 <tr class="fullpage">
                     <td class="fullpage serverside">
                         <div class="sizing">
-                            <Serverlist />
+                            <div id="serverzone">
+                                <TabSystem v-show="$store.state.ready" :selected="tabSelected" :key="$store.state.tabReset">
+                                    <Tab name="Servers" :selected="currentPage === 'Servers'">
+                                        <Serverlist />
+                                    </Tab>
+                                    <Tab name="Users" v-if="$store.state.users" :selected="currentPage === 'Users'">
+                                        <UsersList />
+                                    </Tab>
+                                </TabSystem>
+                            </div>
                         </div>
                     </td>
                     <td class="fullpage">
                         <div class="sizing">
-                            <Properties v-if="$store.state.servers[$store.state.selectedServer]" />
-                            <create-server v-if="$store.state.selectedServer === -1" />
+                            <Properties v-if="$store.state.servers[$store.state.selectedServer]" v-show="currentPage === 'Servers'" />
+                            <create-server v-if="$store.state.selectedServer === -1" v-show="currentPage === 'Servers'" />
+                            <Users v-if="$store.state.users && $store.state.users[$store.state.selectedUser]" :key="$store.state.tabReset" v-show="currentPage === 'Users'" />
+                            <CreateUser v-show="currentPage === 'Users'" v-if="$store.state.selectedUser === -1" />
                         </div>
                     </td>
                 </tr>
@@ -26,6 +37,12 @@ import Vue from 'vue'
 import Serverlist from './parts/Serverlist.vue'
 import Properties from './parts/Properties.vue'
 import CreateServer from './parts/CreateServer.vue'
+import Tab from './elements/Tab.vue';
+import TabSystem from './pieces/TabSystem.vue';
+import Users from './parts/Users.vue';
+import UsersList from './parts/Userlist.vue';
+import CreateUser from './parts/CreateUser.vue';
+
 // import Dialog from './windows/Dialog.vue'
 
 export default Vue.extend({
@@ -33,13 +50,32 @@ export default Vue.extend({
     components: {
         Serverlist,
         Properties,
-        CreateServer
-        // Dialog
+        CreateServer,
+        TabSystem,
+        Tab,
+        UsersList,
+        Users,
+        CreateUser
+    },
+    data() {
+        return {
+            currentPage: 'Servers'
+        }
+    },
+    methods: {
+        tabSelected({ name }: { name: string }) {
+            this.currentPage = name;
+        }
     }
 })
 </script>
 
 <style scoped>
+#serverzone {
+    height: 100%;
+    float: left;
+    /* position: static; */
+}
 table.fullpage {
     padding: 5px;
 }

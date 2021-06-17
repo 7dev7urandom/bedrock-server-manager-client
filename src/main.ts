@@ -18,7 +18,8 @@ const store = new Vuex.Store({
     loggedIn: false,
     ready: false,
     tabReset: 0,
-    currentUserData: {}
+    currentUserData: {},
+    selectedUser: 0
   },
   getters: {
     currentServer: state => {

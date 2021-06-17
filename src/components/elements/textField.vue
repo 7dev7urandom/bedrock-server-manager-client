@@ -4,7 +4,7 @@
         <form v-on:submit.prevent="onSubmit" >
             <input v-if="submit" type="submit" class="submit" value="Submit">
             <div>
-                <input class="text" type="text" v-model="text" :placeholder="placeholder ? placeholder : ''" ref="box">
+                <input class="text" :type="password ? 'password' : 'text'" v-model="text" :placeholder="placeholder ? placeholder : ''" ref="box">
             </div>
         </form>
     </div>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-    props: ['submit', 'change', 'title', 'placeholder', 'value', 'focus'],
+    props: ['submit', 'change', 'title', 'placeholder', 'value', 'focus', 'password'],
     methods: {
         onSubmit() {
             if(this.submit) this.submit(this.text);

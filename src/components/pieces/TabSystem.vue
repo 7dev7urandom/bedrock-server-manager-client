@@ -17,6 +17,7 @@ import Border from '../helper/Border.vue'
 
 export default {
     name: "TabSystem",
+    props: ['selected'],
     data: () => {
         return {
             tabs: []
@@ -31,6 +32,7 @@ export default {
             this.tabs.forEach(tab => {
                 tab.selectedInternal = (tab.name == tabToSelect.name);
             });
+            if(this.selected) this.selected(tabToSelect);
         },
         updateTabs() {
             // console.log("update");

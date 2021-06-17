@@ -1,7 +1,4 @@
 <template>
-    <div id="serverzone">
-        <TabSystem v-show="$store.state.ready">
-            <Tab name="Servers" :selected="true">
                 <div>
                     <list-item :dark="false" :selected="$store.state.selectedServer === -1" v-if="$store.state.currentUserData.globalPermissions & GlobalPermissions.CAN_CREATE_SERVER">
                         <div id="createnewdiv" v-on:click="createServer">Create New</div>
@@ -10,16 +7,12 @@
                         <ServerlistItem :index="index - 1" :obj="$store.state.servers" :key="$store.state.tabReset"></ServerlistItem>
                     </ListItem>
                 </div>
-            </Tab>
-        </TabSystem>
-    </div>
+            
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import ListItem from '../pieces/ListItem.vue';
-import Tab from '../elements/Tab.vue';
-import TabSystem from '../pieces/TabSystem.vue';
 import ServerlistItem from '../pieces/ServerlistItem.vue';
 import { GlobalPermissions } from '../../constants';
 
@@ -48,8 +41,6 @@ export default Vue.extend({
     },
     components: {
         ListItem,
-        Tab,
-        TabSystem,
         ServerlistItem
     },
     methods: {
@@ -67,15 +58,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-#serverzone {
-    height: 100%;
-    float: left;
-    /* position: static; */
-}
 #createnewdiv {
-    height: 70px;
+    height: 60px;
     text-align: center;
-    line-height: 70px;
+    line-height: 60px;
     white-space: nowrap;
     padding: 0 15px 0 15px;
 }

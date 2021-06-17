@@ -130,6 +130,10 @@ export default {
       this.$store.state.servers.splice(index, 1);
       if(index === this.$store.state.selectedServer) this.$store.state.selectedServer = -1;
       this.$store.state.tabReset++;
+    },
+    userlist({ users }) {
+      this.$store.state.users = users;
+      this.$store.state.tabReset++;
     }
   },
   data() {
