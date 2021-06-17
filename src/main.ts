@@ -5,7 +5,7 @@ import VueSocketIO from 'vue-socket.io-extended';
 import Vuex from 'vuex';
 let SocketInstance;
 if(process.env && process.env.NODE_ENV !== "production")
-  SocketInstance = socketio('localhost:3000');
+  SocketInstance = socketio('localhost:3000', { transports: ['websocket']});
 else 
   SocketInstance = socketio(window.location.host);
 
