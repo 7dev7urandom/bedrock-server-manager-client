@@ -71,14 +71,21 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <mc-button :click="setStatus" style="width: calc(100% - 10px);" :disabled="$store.state.servers[$store.state.selectedServer].status === 'Starting' || $store.state.servers[$store.state.selectedServer].status === 'Stopping'" v-if="hasPermissionStatus">
+                        <mc-button :click="setStatus" style="width: calc(100% - 10px);" :disabled="$store.state.servers[$store.state.selectedServer].isUpdating || $store.state.servers[$store.state.selectedServer].status === 'Starting' || $store.state.servers[$store.state.selectedServer].status === 'Stopping'" v-if="hasPermissionStatus">
                             {{ { "Running": "Stop", "Stopped": "Start", "Starting": "Starting...", "Stopping": "Stopping..."}[$store.state.servers[$store.state.selectedServer].status] }}
+                        </mc-button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <mc-button :click="update" style="width: calc(100% - 10px);" :disabled="$store.state.servers[$store.state.selectedServer].isUpdating || $store.state.servers[$store.state.selectedServer].status !== 'Stopped'" v-if="hasPermissionCreate">
+                            Update
                         </mc-button>
                     </td>
                 </tr>
                 <tr v-show="$store.state.currentUserData.globalPermissions & GlobalPermissions.CAN_DELETE_SERVER">
                     <td colspan="2">
-                        <mc-button :click="confirmDelete" style="width: calc(100% - 10px);" class="red" :disabled="serverDeleting" v-show="!confirmDel">
+                        <mc-button :click="confirmDelete" style="width: calc(100% - 10px);" class="red" :disabled="$store.state.servers[$store.state.selectedServer].isUpdating || serverDeleting" v-show="!confirmDel">
                             Delete
                         </mc-button>
                         <mc-button :click="confirmDeleteDialog.bind(this, true)" style="width: calc(50% - 8px);" class="red" v-show="confirmDel">
@@ -155,11 +162,16 @@ export default {
             this.$socket.client.emit('deleteServer', {
                 serverId: this.$store.state.servers[this.$store.state.selectedServer].id,
                 deleteData: this.deletingAll
-            })
+            });
         },
         confirmDeleteDialog(deleteData) {
             this.deletingAll = deleteData;
             this.showConfirm = true;
+        },
+        update() {
+            this.$socket.client.emit('updateServer', {
+                serverId: this.$store.state.servers[this.$store.state.selectedServer].id
+            });
         }
     },
     components: {
@@ -172,6 +184,9 @@ export default {
         },
         hasPermissionStatus() {
             return this.$store.state.servers[this.$store.state.selectedServer].access & LocalPermissions.CAN_SET_STATUS;
+        },
+        hasPermissionCreate() {
+            return this.$store.state.currentUserData.globalPermissions & GlobalPermissions.CAN_CREATE_SERVER;
         }
     }
     // watch: {

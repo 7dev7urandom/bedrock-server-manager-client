@@ -5,8 +5,9 @@
                     <span >{{ server.properties['server-name'] }}</span>
                 </div></td>
 
-            <td class="server-cell right-align">{{ server.type === 'bdsx' ? "bdsx" : server.version }}</td>
-            <td class="server-cell right-align min-cell-size" :class="server.status === 'Running' ? 'green' : server.status === 'Stopped' ? 'red' : 'yellow'">{{ server.status }}</td>
+            <td class="server-cell right-align">{{ server.version }}{{ server.type === 'bdsx' ? 'b' : ''}}</td>
+            <td v-show="!server.isUpdating" class="server-cell right-align min-cell-size" :class="server.status === 'Running' ? 'green' : server.status === 'Stopped' ? 'red' : 'yellow'">{{ server.status }}</td>
+            <td v-show="server.isUpdating" class="server-cell right-align min-cell-size yellow">Updating</td>
         </tr>
         <tr class="heightzero">
             <td></td>

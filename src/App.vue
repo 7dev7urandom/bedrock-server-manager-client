@@ -45,9 +45,6 @@ export default {
       this.$store.state.servers[index] = data;
       this.$store.state.servers[index].local = local;
       this.$store.state.tabReset++;
-      // setTimeout(() => {
-      //   this.$store.state.tabReset = !this.$store.state.tabReset;
-      // }, 1000);
     },
     serverUpdate({ consoleAppend, properties, id, status, worlds, currentWorld, allowedUsers, output, permissions, plugins, scriptingTabs }) {
       const server = this.$store.state.servers.find(s => s.id === id);
@@ -104,6 +101,7 @@ export default {
       serverobj.properties['max-players'] = server['max-players'];
       serverobj.properties['server-port'] = server['server-port'];
       serverobj.properties['server-name'] = server['server-name'];
+      if(serverobj.type === 'bdsx') serverobj.isUpdating = server.isUpdating;
       // console.log("clobberall " + JSON.stringify(serverobj));
       this.$store.state.tabReset++;
     },
